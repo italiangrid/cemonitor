@@ -1,0 +1,5 @@
+org.glite.ce.monitor.configuration.xppm.ActionConfigHandler
+org.glite.ce.monitor.configuration.xppm.QueryProcConfigHandler
+org.glite.ce.monitor.configuration.xppm.SensorConfigHandler
+org.glite.ce.monitor.configuration.xppm.SubscriptionConfigHandler
+
