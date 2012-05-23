@@ -30,6 +30,144 @@
         <artifactId>maven-jar-plugin</artifactId>
         <version>2.4</version>
         <executions>
+
+          <execution>
+            <id>authorization</id>
+            <phase>package</phase>
+            <goals><goal>jar</goal></goals>
+            <configuration>
+              <finalName>cemonitor-authorization</finalName>
+              <outputDirectory>${project.build.directory}/axis2</outputDirectory>
+              <includes>
+                <include>**/authz/axis2/*</include>
+                <include>**/module.xml</include>
+              </includes>
+              <archive>
+                <index>true</index>
+                <manifest><addDefaultImplementationEntries/></manifest>
+              </archive>
+            </configuration>
+          </execution>
+
+          <execution>
+            <id>service</id>
+            <phase>package</phase>
+            <goals><goal>jar</goal></goals>
+            <configuration>
+              <finalName>cemonitor-service</finalName>
+              <outputDirectory>${project.build.directory}/axis2</outputDirectory>
+              <includes>
+                <include>**/monitor/ws/*</include>
+                <include>**/services.xml</include>
+              </includes>
+              <archive>
+                <index>true</index>
+                <manifest><addDefaultImplementationEntries/></manifest>
+              </archive>
+            </configuration>
+          </execution>
+
+          <execution>
+            <id>action1</id>
+            <phase>package</phase>
+            <goals><goal>jar</goal></goals>
+            <configuration>
+              <finalName>SendExpiredNotificationAction</finalName>
+              <outputDirectory>${project.build.directory}/plugins</outputDirectory>
+              <includes>
+                <include>org/glite/ce/monitor/action/SendExpiredNotificationAction.class</include>
+              </includes>
+              <archive>
+                <index>true</index>
+                <manifest>
+                  <addDefaultImplementationEntries/>
+                  <mainClass>org.glite.ce.monitor.action.SendExpiredNotificationAction</mainClass>
+                </manifest>
+              </archive>
+            </configuration>
+          </execution>
+
+          <execution>
+            <id>action2</id>
+            <phase>package</phase>
+            <goals><goal>jar</goal></goals>
+            <configuration>
+              <finalName>SendNotificationAction</finalName>
+              <outputDirectory>${project.build.directory}/plugins</outputDirectory>
+              <includes>
+                <include>org/glite/ce/monitor/action/SendNotificationAction.class</include>
+              </includes>
+              <archive>
+                <index>true</index>
+                <manifest>
+                  <addDefaultImplementationEntries/>
+                  <mainClass>org.glite.ce.monitor.action.SendNotificationAction</mainClass>
+                </manifest>
+              </archive>
+            </configuration>
+          </execution>
+
+          <execution>
+            <id>action3</id>
+            <phase>package</phase>
+            <goals><goal>jar</goal></goals>
+            <configuration>
+              <finalName>DoNotSendNotificationAction</finalName>
+              <outputDirectory>${project.build.directory}/plugins</outputDirectory>
+              <includes>
+                <include>org/glite/ce/monitor/action/DoNotSendNotificationAction.class</include>
+              </includes>
+              <archive>
+                <index>true</index>
+                <manifest>
+                  <addDefaultImplementationEntries/>
+                  <mainClass>org.glite.ce.monitor.action.DoNotSendNotificationAction</mainClass>
+                </manifest>
+              </archive>
+            </configuration>
+          </execution>
+
+          <execution>
+            <id>processor1</id>
+            <phase>package</phase>
+            <goals><goal>jar</goal></goals>
+            <configuration>
+              <finalName>ClassAdProcessor</finalName>
+              <outputDirectory>${project.build.directory}/plugins</outputDirectory>
+              <includes>
+                <include>org/glite/ce/monitor/queryprocessor/ClassAdProcessor.class</include>
+              </includes>
+              <archive>
+                <index>true</index>
+                <manifest>
+                  <addDefaultImplementationEntries/>
+                  <mainClass>org.glite.ce.monitor.queryprocessor.ClassAdProcessor</mainClass>
+                </manifest>
+              </archive>
+            </configuration>
+          </execution>
+
+          <execution>
+            <id>processor2</id>
+            <phase>package</phase>
+            <goals><goal>jar</goal></goals>
+            <configuration>
+              <finalName>RegExProcessor</finalName>
+              <outputDirectory>${project.build.directory}/plugins</outputDirectory>
+              <includes>
+                <include>org/glite/ce/monitor/queryprocessor/RegExProcessor.class</include>
+              </includes>
+              <archive>
+                <index>true</index>
+                <manifest>
+                  <addDefaultImplementationEntries/>
+                  <mainClass>org.glite.ce.monitor.queryprocessor.RegExProcessor</mainClass>
+                </manifest>
+              </archive>
+            </configuration>
+          </execution>
+
+          <!-- this must be the project's main artifact -->
           <execution>
             <id>default-jar</id>
             <phase>package</phase>
@@ -49,6 +187,7 @@
               </archive>
             </configuration>
           </execution>
+
         </executions>
       </plugin>
 
