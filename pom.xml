@@ -8,7 +8,7 @@
     <version>1.15</version>
   </parent>
 
-  <groupId>org.glite.ce.monitor</groupId>
+  <groupId>org.glite.ce</groupId>
   <artifactId>cemonitor</artifactId>
   <version>${cemonitor.version}</version>
   <packaging>jar</packaging>
@@ -44,7 +44,7 @@
               </includes>
               <archive>
                 <index>true</index>
-                <manifest><addDefaultImplementationEntries/></manifest>
+                <manifest><addDefaultSpecificationEntries/></manifest>
               </archive>
             </configuration>
           </execution>
@@ -62,7 +62,7 @@
               </includes>
               <archive>
                 <index>true</index>
-                <manifest><addDefaultImplementationEntries/></manifest>
+                <manifest><addDefaultSpecificationEntries/></manifest>
               </archive>
             </configuration>
           </execution>
@@ -80,7 +80,7 @@
               <archive>
                 <index>true</index>
                 <manifest>
-                  <addDefaultImplementationEntries/>
+                  <addDefaultSpecificationEntries/>
                   <mainClass>org.glite.ce.monitor.action.SendExpiredNotificationAction</mainClass>
                 </manifest>
               </archive>
@@ -100,7 +100,7 @@
               <archive>
                 <index>true</index>
                 <manifest>
-                  <addDefaultImplementationEntries/>
+                  <addDefaultSpecificationEntries/>
                   <mainClass>org.glite.ce.monitor.action.SendNotificationAction</mainClass>
                 </manifest>
               </archive>
@@ -120,7 +120,7 @@
               <archive>
                 <index>true</index>
                 <manifest>
-                  <addDefaultImplementationEntries/>
+                  <addDefaultSpecificationEntries/>
                   <mainClass>org.glite.ce.monitor.action.DoNotSendNotificationAction</mainClass>
                 </manifest>
               </archive>
@@ -140,7 +140,7 @@
               <archive>
                 <index>true</index>
                 <manifest>
-                  <addDefaultImplementationEntries/>
+                  <addDefaultSpecificationEntries/>
                   <mainClass>org.glite.ce.monitor.queryprocessor.ClassAdProcessor</mainClass>
                 </manifest>
               </archive>
@@ -160,7 +160,7 @@
               <archive>
                 <index>true</index>
                 <manifest>
-                  <addDefaultImplementationEntries/>
+                  <addDefaultSpecificationEntries/>
                   <mainClass>org.glite.ce.monitor.queryprocessor.RegExProcessor</mainClass>
                 </manifest>
               </archive>
@@ -183,7 +183,7 @@
               </includes>
               <archive>
                 <index>true</index>
-                <manifest><addDefaultImplementationEntries/></manifest>
+                <manifest><addDefaultSpecificationEntries/></manifest>
               </archive>
             </configuration>
           </execution>
@@ -199,16 +199,23 @@
   <dependencies>
   
     <dependency>
-      <groupId>org.glite.ce.commonj</groupId>
-      <artifactId>glite-ce-common-java</artifactId>
+      <groupId>org.glite.ce</groupId>
+      <artifactId>cream-common</artifactId>
       <version>${common.java.version}</version>
       <scope>compile</scope>
     </dependency>
 
     <dependency>
-      <groupId>org.glite.ce.monitorapij</groupId>
+      <groupId>org.glite.ce</groupId>
       <artifactId>cemonitor-api-java</artifactId>
       <version>${cemonapi.version}</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>eu.eu-emi.security</groupId>
+      <artifactId>canl</artifactId>
+      <version>${canl.version}</version>
       <scope>compile</scope>
     </dependency>
 
