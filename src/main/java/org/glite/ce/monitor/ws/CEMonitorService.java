@@ -18,6 +18,7 @@
 
 package org.glite.ce.monitor.ws;
 
+import java.io.FileInputStream;
 import java.net.URI;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -25,7 +26,6 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.Vector;
 
 import org.apache.axis2.context.ServiceContext;
 import org.apache.axis2.service.Lifecycle;
@@ -102,8 +102,8 @@ import org.glite.ce.monitorapij.ws.Unsubscribe;
 import org.glite.ce.monitorapij.ws.UnsubscribeResponse;
 import org.glite.ce.monitorapij.ws.Update;
 import org.glite.ce.monitorapij.ws.UpdateResponse;
-import org.glite.security.util.DNHandler;
-import org.glite.security.util.FileCertReader;
+
+import eu.emi.security.authn.x509.impl.CertificateUtils;
 
 public class CEMonitorService
     extends CEMonitorSkeleton
@@ -358,10 +358,10 @@ public class CEMonitorService
 
         if (sslCertFilename != null) {
             try {
-                FileCertReader reader = new FileCertReader();
-                Vector<X509Certificate> allCerts = reader.readCerts(sslCertFilename);
-                X509Certificate hostCert = allCerts.elementAt(0);
-                String hostDN = DNHandler.getSubject(hostCert).getRFCDNv2();
+
+                FileInputStream fIn = new FileInputStream(sslCertFilename);
+                X509Certificate hostCert = CertificateUtils.loadCertificate(fIn, CertificateUtils.Encoding.PEM);
+                String hostDN = hostCert.getSubjectX500Principal().getName();
                 property[0].setValue(hostDN);
                 logger.debug("Host DN: " + hostDN);
             } catch (Exception ex) {
