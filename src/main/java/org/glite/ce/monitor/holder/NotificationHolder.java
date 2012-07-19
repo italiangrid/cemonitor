@@ -44,8 +44,8 @@ import org.glite.ce.monitorapij.sensor.SensorEvent;
 import org.glite.ce.monitorapij.sensor.SensorOutputDataFormat;
 import org.glite.ce.monitorapij.types.Event;
 import org.glite.ce.monitorapij.ws.CEMonitorConsumerStub;
-import org.glite.security.trustmanager.ContextWrapper;
-import org.glite.security.trustmanager.axis2.AXIS2SocketFactory;
+
+import eu.emi.security.canl.axis2.CANLAXIS2SocketFactory;
 
 /**
  * This classed is used to take care of all aspects relating notifications. It
@@ -60,6 +60,20 @@ public final class NotificationHolder
     private final static Logger logger = Logger.getLogger(NotificationHolder.class.getName());
 
     private final static int EVN_PAGE_SIZE = 100;
+
+    private final static String CREDENTIALS_PROXY_FILE = "proxy";
+
+    private final static String CREDENTIALS_CERT_FILE = "cert";
+
+    private final static String CREDENTIALS_KEY_FILE = "key";
+
+    private final static String CREDENTIALS_KEY_PASSWD = "password";
+
+    private final static String CA_LOCATION = "truststore";
+
+    private final static String CRL_MODE = "crlcheckingmode";
+
+    private final static String CACRL_REFRESH = "updateinterval";
 
     private String name;
 
@@ -90,9 +104,9 @@ public final class NotificationHolder
      * @param topicHolder
      *            The <code>TopicHolder</code>.
      */
-    public NotificationHolder(String name, int rate, TopicHolder topicHolder, 
-            QueryProcessorHolder queryProcessorHolder, SubscriptionRegistry subscriptionRegistry, 
-            NotificationPool pool)  throws IllegalArgumentException {
+    public NotificationHolder(String name, int rate, TopicHolder topicHolder,
+            QueryProcessorHolder queryProcessorHolder, SubscriptionRegistry subscriptionRegistry, NotificationPool pool)
+        throws IllegalArgumentException {
 
         super();
 
@@ -126,7 +140,7 @@ public final class NotificationHolder
 
         subscrMap = new HashMap<String, SubscriptionPersistent>();
 
-        Protocol.registerProtocol("https", new Protocol("https", new AXIS2SocketFactory(), 8443));
+        Protocol.registerProtocol("https", new Protocol("https", new CANLAXIS2SocketFactory(), 8443));
 
         notificationThread = new Thread(this);
         notificationThread.setName(name);
@@ -200,7 +214,7 @@ public final class NotificationHolder
                 throw (new Exception("QueryProcessor \"" + query.getQueryLanguage() + "\" not found!"));
             }
         }
-        
+
         Dialect[] dialectArray = subscription.getTopic().getDialect();
         String dataFormat = "default";
 
@@ -217,24 +231,24 @@ public final class NotificationHolder
             if (event == null) {
                 continue;
             }
-            
+
             if (event.isExpired()) {
-                
+
                 try {
                     logger.debug("removing expired event [id=" + event.getID() + "] [name=" + event.getName()
                             + "] [expirationTime=" + event.getExpirationTime() + "]");
                     topicHolder.removeEvent(event);
                 } catch (Throwable t) {
-                    logger.error("cannot remove the event [id=" + event.getID() + "] [name=" + event.getName()
-                            + "]!", t);
+                    logger.error("cannot remove the event [id=" + event.getID() + "] [name=" + event.getName() + "]!",
+                            t);
                 }
 
                 eventList.remove(i);
-                
+
                 continue;
-                
+
             }
-            
+
             SensorOutputDataFormat format = event.getSensorOutputDataFormatApplied();
 
             if (format == null || !format.getName().equals(dataFormat)) {
@@ -282,7 +296,7 @@ public final class NotificationHolder
 
         for (int i = 0; i < actions.length; i++) {
             try {
-                
+
                 Action action = new Action();
                 action.setCreationTime(actions[i].getCreationTime());
                 action.setDoActionWhenQueryIs(actions[i].isDoActionWhenQueryIs());
@@ -347,18 +361,17 @@ public final class NotificationHolder
 
                 try {
                     logger.debug("[name=" + this.name + "] - processing subscription id " + subscription.getId());
-                    
+
                     Topic topic = subscription.getTopic();
 
                     Policy policy = subscription.getPolicy();
-                    if (policy==null) {
+                    if (policy == null) {
                         continue;
                     }
                     SensorEventArrayList event = topicHolder.getEvents(topic.getName(), subscription.getSubscriberId(),
                             subscription.getSubscriberGroup());
 
                     logger.debug("[name=" + this.name + "] - found " + event.size() + " events");
-                    
 
                     CEMonitorConsumerStub.Notification notification = new CEMonitorConsumerStub.Notification();
                     notification.setExpirationTime(subscription.getExpirationTime());
@@ -394,9 +407,9 @@ public final class NotificationHolder
                             }
 
                             Properties sslConfig = this.getSSLParameters(subscription.getCredentialFile(),
-                                    subscription.getPassphrase(), subscription.getSSLProtocol());
+                                    subscription.getPassphrase());
 
-                            AXIS2SocketFactory.setCurrentProperties(sslConfig);
+                            CANLAXIS2SocketFactory.setCurrentProperties(sslConfig);
                             CEMonitorConsumerStub consumer = new CEMonitorConsumerStub(consumerURI.toString());
                             CEMonitorConsumerStub.Notify msg = new CEMonitorConsumerStub.Notify();
                             msg.setNotification(notification);
@@ -535,7 +548,7 @@ public final class NotificationHolder
         logger.debug(sb.toString());
     }
 
-    private Properties getSSLParameters(String credFile, String passphrase, String protocol) {
+    private Properties getSSLParameters(String credFile, String passphrase) {
 
         Properties sslConfig = new Properties();
 
@@ -546,14 +559,14 @@ public final class NotificationHolder
 
         if (credFile != null) {
 
-            sslConfig.put(ContextWrapper.CREDENTIALS_PROXY_FILE, credFile);
+            sslConfig.put(CREDENTIALS_PROXY_FILE, credFile);
 
         } else {
 
             String tmps = sConfiguration.getGlobalAttributeAsString("gridproxyfile");
             if (tmps != "") {
 
-                sslConfig.put(ContextWrapper.CREDENTIALS_PROXY_FILE, tmps);
+                sslConfig.put(CREDENTIALS_PROXY_FILE, tmps);
 
             } else {
 
@@ -566,36 +579,39 @@ public final class NotificationHolder
                 if (certFilename == "" || keyFilename == "") {
                     throw new RuntimeException("Missing user credentials");
                 } else {
-                    sslConfig.put(ContextWrapper.CREDENTIALS_CERT_FILE, certFilename);
-                    sslConfig.put(ContextWrapper.CREDENTIALS_KEY_FILE, keyFilename);
+                    sslConfig.put(CREDENTIALS_CERT_FILE, certFilename);
+                    sslConfig.put(CREDENTIALS_KEY_FILE, keyFilename);
                 }
 
-                sslConfig.put(ContextWrapper.CREDENTIALS_KEY_PASSWD, passwd);
+                sslConfig.put(CREDENTIALS_KEY_PASSWD, passwd);
 
             }
         }
 
         if (passphrase != "") {
-            sslConfig.put(ContextWrapper.CREDENTIALS_KEY_PASSWD, passphrase);
+            sslConfig.put(CREDENTIALS_KEY_PASSWD, passphrase);
         }
 
-        if (protocol != "")
-            sslConfig.put(ContextWrapper.SSL_PROTOCOL, protocol);
+        /*
+         * TODO changes in configurations: removed protocol from subscriptions
+         * (no SSLv3 available); replaced sslCAfiles with sslCALocation; removed
+         * sslCRLfiles; add disableCRL and sslRefreshTime
+         */
 
-        String CAfiles = sConfiguration.getGlobalAttributeAsString("sslCAfiles");
-        if (CAfiles != "") {
-            sslConfig.put(ContextWrapper.CA_FILES, CAfiles);
+        String CALocation = sConfiguration.getGlobalAttributeAsString("sslCALocation");
+        if (CALocation != "") {
+            sslConfig.put(CA_LOCATION, CALocation);
         }
 
-        String CRLfiles = sConfiguration.getGlobalAttributeAsString("sslCRLfiles");
-        if (CRLfiles != "") {
-            sslConfig.put(ContextWrapper.CRL_ENABLED, "true");
-            sslConfig.put(ContextWrapper.CRL_FILES, CRLfiles);
-            sslConfig.put(ContextWrapper.CRL_UPDATE_INTERVAL, "0s");
-
+        String disableCRL = sConfiguration.getGlobalAttributeAsString("disableCRL");
+        if (disableCRL.equalsIgnoreCase("true")) {
+            sslConfig.put(CRL_MODE, "ignore");
         } else {
-            sslConfig.put(ContextWrapper.CRL_ENABLED, "false");
+            sslConfig.put(CRL_MODE, "ifvalid");
         }
+
+        sConfiguration.getGlobalAttributeAsInt("sslRefreshTime", 3600000);
+        sslConfig.put(CACRL_REFRESH, "updateinterval");
 
         return sslConfig;
     }

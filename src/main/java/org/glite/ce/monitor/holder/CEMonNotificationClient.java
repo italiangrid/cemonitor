@@ -27,29 +27,31 @@ import org.glite.ce.monitorapij.resource.types.Dialect;
 import org.glite.ce.monitorapij.resource.types.SubscriptionPersistent;
 import org.glite.ce.monitorapij.resource.types.Topic;
 import org.glite.ce.monitorapij.ws.CEMonitorConsumerStub;
-import org.glite.security.trustmanager.axis2.AXIS2SocketFactory;
 
-public class CEMonNotificationClient 
+import eu.emi.security.canl.axis2.CANLAXIS2SocketFactory;
+
+
+public class CEMonNotificationClient
     implements NotificationClient {
-    
+
     private final static Logger logger = Logger.getLogger(CEMonNotificationClient.class.getName());
-    
+
     private CEMonitorConsumerStub.Notification notification;
-    
+
     public CEMonNotificationClient(SubscriptionPersistent subscription) {
-        
+
         URI consumerURI = null;
         try {
             consumerURI = new URI(subscription.getMonitorConsumerURL().toString());
-        }catch(Exception ex){
+        } catch (Exception ex) {
             /*
              * Already checked
              */
             logger.error(ex.getMessage(), ex);
         }
-        
+
         Topic topic = subscription.getTopic();
-        
+
         notification = new CEMonitorConsumerStub.Notification();
         notification.setExpirationTime(subscription.getExpirationTime());
         CEMonitorConsumerStub.Topic newTopic = new CEMonitorConsumerStub.Topic();
@@ -68,30 +70,31 @@ public class CEMonNotificationClient
         notification.setTopic(newTopic);
         notification.setEvent(null);
         notification.setConsumerURL(consumerURI);
-        
+
     }
 
-    public void processEvents(SensorEventArrayList evnList){
+    public void processEvents(SensorEventArrayList evnList) {
     }
 
-    public SensorEventArrayList getProcessedEvents(){
+    public SensorEventArrayList getProcessedEvents() {
         return null;
     }
-    
+
     public int size() {
         return 0;
     }
 
-    public void sendEvents(Properties sslConfig) throws IOException {
+    public void sendEvents(Properties sslConfig)
+        throws IOException {
         URI consumerURI = notification.getConsumerURL();
-        AXIS2SocketFactory.setCurrentProperties(sslConfig);
-        
-        try{
+        CANLAXIS2SocketFactory.setCurrentProperties(sslConfig);
+
+        try {
             CEMonitorConsumerStub consumer = new CEMonitorConsumerStub(consumerURI.toString());
             CEMonitorConsumerStub.Notify msg = new CEMonitorConsumerStub.Notify();
             msg.setNotification(notification);
             consumer.notify(msg);
-        }catch(Throwable th){
+        } catch (Throwable th) {
             logger.error(th.getMessage());
             throw new IOException("Cannot send notification to " + consumerURI.toString());
         }

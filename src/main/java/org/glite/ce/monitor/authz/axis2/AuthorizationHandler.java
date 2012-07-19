@@ -33,13 +33,27 @@ import org.apache.log4j.Logger;
 import org.glite.ce.commonj.configuration.CommonServiceConfig;
 import org.glite.ce.faults.AuthorizationFault;
 import org.glite.ce.monitor.configuration.CEMonServiceConfig;
-import org.glite.security.trustmanager.ContextWrapper;
-import org.glite.security.trustmanager.axis2.AXIS2SocketFactory;
+
+import eu.emi.security.canl.axis2.CANLAXIS2SocketFactory;
 
 public class AuthorizationHandler
     extends org.glite.ce.commonj.authz.axis2.AuthorizationHandler {
 
     private static final Logger logger = Logger.getLogger(AuthorizationHandler.class.getName());
+
+    private final static String CREDENTIALS_PROXY_FILE = "proxy";
+
+    private final static String CREDENTIALS_CERT_FILE = "cert";
+
+    private final static String CREDENTIALS_KEY_FILE = "key";
+
+    private final static String CREDENTIALS_KEY_PASSWD = "password";
+
+    private final static String CA_LOCATION = "truststore";
+
+    private final static String CRL_MODE = "crlcheckingmode";
+
+    private final static String CACRL_REFRESH = "updateinterval";
 
     public AuthorizationHandler() {
         super();
@@ -49,9 +63,9 @@ public class AuthorizationHandler
         throws AxisFault {
 
         /*
-         * This workaround resolves the conflict between Argus and consumer
-         * clients Argus client uses the trustmanager for axis2, replacing the
-         * previous factory
+         * TODO verify conflict. This workaround resolves the conflict between
+         * Argus and consumer clients. Argus client uses the trustmanager for
+         * axis2, replacing the previous factory
          */
 
         /*
@@ -68,7 +82,7 @@ public class AuthorizationHandler
         String tmps = sConfiguration.getGlobalAttributeAsString("gridproxyfile");
         if (tmps != "") {
 
-            sslConfig.put(ContextWrapper.CREDENTIALS_PROXY_FILE, tmps);
+            sslConfig.put(CREDENTIALS_PROXY_FILE, tmps);
 
         } else {
 
@@ -81,32 +95,35 @@ public class AuthorizationHandler
             if (certFilename == "" || keyFilename == "") {
                 throw new RuntimeException("Missing user credentials");
             } else {
-                sslConfig.put(ContextWrapper.CREDENTIALS_CERT_FILE, certFilename);
-                sslConfig.put(ContextWrapper.CREDENTIALS_KEY_FILE, keyFilename);
+                sslConfig.put(CREDENTIALS_CERT_FILE, certFilename);
+                sslConfig.put(CREDENTIALS_KEY_FILE, keyFilename);
             }
 
-            sslConfig.put(ContextWrapper.CREDENTIALS_KEY_PASSWD, passwd);
+            sslConfig.put(CREDENTIALS_KEY_PASSWD, passwd);
 
         }
 
-        sslConfig.put(ContextWrapper.SSL_PROTOCOL, "TLSv1");
+        /*
+         * TODO changes in configurations: replaced sslCAfiles with
+         * sslCALocation removed; sslCRLfiles add disableCRL and sslRefreshTime;
+         */
 
-        String CAfiles = sConfiguration.getGlobalAttributeAsString("sslCAfiles");
-        if (CAfiles != "") {
-            sslConfig.put(ContextWrapper.CA_FILES, CAfiles);
+        String CALocation = sConfiguration.getGlobalAttributeAsString("sslCALocation");
+        if (CALocation != "") {
+            sslConfig.put(CA_LOCATION, CALocation);
         }
 
-        String CRLfiles = sConfiguration.getGlobalAttributeAsString("sslCRLfiles");
-        if (CRLfiles != "") {
-            sslConfig.put(ContextWrapper.CRL_ENABLED, "true");
-            sslConfig.put(ContextWrapper.CRL_FILES, CRLfiles);
-            sslConfig.put(ContextWrapper.CRL_UPDATE_INTERVAL, "0s");
-
+        String disableCRL = sConfiguration.getGlobalAttributeAsString("disableCRL");
+        if (disableCRL.equalsIgnoreCase("true")) {
+            sslConfig.put(CRL_MODE, "ignore");
         } else {
-            sslConfig.put(ContextWrapper.CRL_ENABLED, "false");
+            sslConfig.put(CRL_MODE, "ifvalid");
         }
 
-        AXIS2SocketFactory.setCurrentProperties(sslConfig);
+        sConfiguration.getGlobalAttributeAsInt("sslRefreshTime", 3600000);
+        sslConfig.put(CACRL_REFRESH, "updateinterval");
+
+        CANLAXIS2SocketFactory.setCurrentProperties(sslConfig);
 
         return super.invoke(msgContext);
     }
