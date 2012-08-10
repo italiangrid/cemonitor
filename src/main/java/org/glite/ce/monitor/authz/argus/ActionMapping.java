@@ -22,6 +22,7 @@ import java.util.Iterator;
 
 import javax.xml.namespace.QName;
 
+import org.glite.authz.pep.profile.AbstractAuthorizationProfile;
 import org.glite.authz.pep.profile.GridCEAuthorizationProfile;
 import org.glite.ce.commonj.authz.AuthorizationException;
 import org.glite.ce.commonj.authz.argus.ActionMappingInterface;
@@ -34,9 +35,9 @@ public class ActionMapping
     public String getXACMLAction(QName operation) {
 
         String opName = operation.getLocalPart();
-        
-        if (opName.equals("GetInfo") || opName.equals("GetTopics")
-                || opName.equals("GetEvent") || opName.equals("GetTopicEvent")) {
+
+        if (opName.equals("GetInfo") || opName.equals("GetTopics") || opName.equals("GetEvent")
+                || opName.equals("GetTopicEvent")) {
             return GridCEAuthorizationProfile.ACTION_GET_INFO;
         }
 
@@ -61,6 +62,10 @@ public class ActionMapping
     }
 
     public void checkMandatoryProperties(Iterator<String> props)
-            throws AuthorizationException {
+        throws AuthorizationException {
+    }
+
+    public AbstractAuthorizationProfile getProfile() {
+        return GridCEAuthorizationProfile.getInstance();
     }
 }
