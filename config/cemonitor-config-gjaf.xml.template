@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<service id="main-service"
+         ServiceDescription="cemonitor service"
+         InterfaceVersion="1.0"
+         ServiceVersion="1.0"
+         sslkeyfile="TOMCAT_HOSTKEY_LOCATION"
+         sslcertfile="TOMCAT_HOSTCERT_LOCATION"
+         sslkeypasswd=""
+         sslCAfiles="/etc/grid-security/certificates/*.0"
+         sslCRLfiles="/etc/grid-security/certificates/*.r0"
+         maxSubscriptionExpirationTime_hours="200"
+         notificationSharedThread="false"
+         notificationTimeout_sec="60"
+         backendLocation="/var/cemonitor"
+         confProvider="org.glite.ce.commonj.jndi.provider.fscachedprovider.CEGeneralDirContextFactory"
+         subscriptionRegistryConfProvider="org.glite.ce.commonj.jndi.provider.fscachedprovider.CEGeneralDirContextFactory">
+
+  <authzchain name="chain-1">
+    <plugin name="bannerpdp"
+            classname="org.glite.ce.commonj.authz.gjaf.BlackListServicePDP">
+      <parameter name="blackListFile"
+                 value="/etc/lcas/ban_users.db" />
+    </plugin>
+    <plugin name="admincheckpip"
+            classname="org.glite.ce.commonj.authz.gjaf.AdminCheckerPIP">
+      <parameter name="adminList"
+                 value="/etc/grid-security/admin-list" />
+    </plugin>
+
+    <plugin name="gridmappdp"
+            classname="org.glite.ce.commonj.authz.gjaf.GridMapServicePDP">
+      <parameter name="gridMapFile"
+                 value="/etc/grid-security/grid-mapfile" />
+    </plugin>
+
+    <plugin name="vomspdp"
+            classname="org.glite.ce.commonj.authz.gjaf.VomsServicePDP">
+      <parameter name="gridMapFile"
+                 value="/etc/grid-security/grid-mapfile" />
+    </plugin>
+
+  </authzchain>
+
+  <action id="1"
+          name="SendNotification"
+          type="action"
+          jarpath="/usr/share/java/glite-ce-monitor-SendNotificationAction.jar">
+  </action>
+
+  <action id="2"
+          name="DoNotSendNotification"
+          type="action"
+          jarpath="/usr/share/java/glite-ce-monitor-DoNotSendNotificationAction.jar">
+  </action>
+
+
+  <action id="3"
+          name="SendExpiredNotification"
+          type="action"
+          jarpath="/usr/share/java/glite-ce-monitor-SendExpiredNotificationAction.jar">
+  </action>
+
+
+  <queryprocessor id="processor-1"
+          name="ClassAd"
+          type="queryprocessor"
+          jarpath="/usr/share/java/glite-ce-monitor-ClassAdProcessor.jar" />
+
+  <queryprocessor id="processor-2"
+          name="RegEx"
+          type="queryprocessor"
+          jarpath="/usr/share/java/glite-ce-monitor-RegExProcessor.jar" />
+
+
+  <!-- sensor id="sensor-job-cream"
+          name="CREAM Job Sensor"
+          type="CREAM_JOBS"
+          jarpath="/usr/share/java/glite-ce-job-plugin.jar">
+    <property name="executionDelay" value="60" />
+    <property name="pushMode" value="false" />
+    <property name="expiration" value="10" />
+    <property name="purgeAllEventsOnStartup" value="false"/>
+  </sensor -->
+  
+  <!--sensor id="sensor-ce"
+          name="CE Sensor"
+          type="CE_MONITOR"
+          jarpath="/usr/share/java/glite-ce-ce-plugin.jar">
+    <property name="executionDelay" value="60" />
+    <property name="scriptURI" value="/usr/libexec/glite-ce-info" />
+    <property name="multiple_attributes" value="GlueChunkKey,GlueForeignKey,GlueServiceName,GlueServiceVersion,GlueServiceEndpoint,GlueServiceStatusInfo,GlueServiceSemantics,GlueServiceOwner,GlueServiceDataValue,GlueSiteName,GlueSiteSponsor,GlueSiteOtherInfo,GlueCEAccessControlBaseRule,GlueClusterService,GlueHostApplicationSoftwareRunTimeEnvironment,GlueHostLocalFileSystemClient,GlueHostRemoteFileSystemServer,GlueCESEBindGroupSEUniqueID,GlueSEHostingSL,GlueSEArchitecture,GlueSEType,GlueSEAccessProtocolSupportedSecurity,GlueSEAccessProtocolCapability,GlueSEControlProtocolCapability,GlueSLServiceGlueSLLocalFileSystemClient,GlueSAAccessControlBaseRule" />
+    <property name="purgeAllEventsOnStartup" value="false"/>
+  </sensor-->
+
+  <!-- sensor id="sensor-osg-ce"
+          name="OSG CE Sensor"
+          type="OSG_CE"
+          jarpath="/usr/share/java/glite-ce-osg-ce-plugin.jar">
+    <property name="executionDelay" value="60000" />
+    <property name="scriptURI" value="/usr/libexec/glite-ce-info" />
+    <property name="not_supported_attributes" value="GlueSiteDescription,GlueSiteLocation,GlueSiteWeb,GlueSiteSponsor,GlueSiteOtherInfo,GlueForeignKey,GlueChunkKey,createTimestamp,GlueCESEBindCEUniqueID,GlueCESEBindCEAccesspoint,GlueCESEBindGroupCEUniqueID,GlueCESEBindSEUniqueID,GlueCESEBindGroupSEUniqueID,entryTtl,modifyTimestamp,dn,ObjectClass" />
+    <property name="multiple_values_attributes" value="GlueSiteSponsor,GlueSiteOtherInfo,GlueServiceAccessPointURL,GlueServiceAccessControlRule,GlueInformationServiceURL,GlueChunkKey,GlueForeignKey,GlueCEAccessControlBaseRule,GlueClusterService,GlueHostService,GlueHostApplicationSoftwareRunTimeEnvironment,GlueHostLocalFileSystemClient,GlueHostRemoteFileSystemServer,GlueCESEBindGroupSEUniqueID,GlueSEHostingSL,GlueSEAccessProtocolSupportedSecurity,GlueSLService,GlueSLLocalFileSystemClient,GlueSAAccessControlBaseRule" />
+    <property name="purgeAllEventsOnStartup" value="false"/>
+  </sensor -->
+
+  <!-- subscription id="subscription-1"
+                monitorConsumerURL="URL_of_the_CE_Monitor_Client"
+                sslprotocol="SSLv3"
+                retryCount="-1">
+    <topic name="CE_MONITOR">
+      <dialect name="ISM_CLASSAD" />
+    </topic>
+    <policy rate="60">
+      <query queryLanguage="ClassAd"><![CDATA[GlueCEStateWaitingJobs<2]]></query>
+      <action name="SendNotification" doActionWhenQueryIs="true" />
+      <action name="SendExpiredNotification" doActionWhenQueryIs="false" />
+    </policy>
+  </subscription -->
+
+</service>
