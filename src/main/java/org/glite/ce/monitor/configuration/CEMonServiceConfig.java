@@ -30,8 +30,10 @@ public class CEMonServiceConfig
     extends CommonServiceConfig {
 
     private static Logger logger = Logger.getLogger(CEMonServiceConfig.class.getName());
-    
-    protected static CEMonServiceConfig serviceConfiguration = null;
+
+    static {
+        CommonServiceConfig.configuratorClass = CEMonServiceConfig.class;
+    }
 
     protected CEMonServiceConfig() throws CommonConfigException {
 
@@ -65,23 +67,16 @@ public class CEMonServiceConfig
     }
 
     public static CEMonServiceConfig getConfiguration() {
-        if (serviceConfiguration == null) {
+        CommonServiceConfig serviceConfiguration = CommonServiceConfig.getConfiguration();
 
-            synchronized (CEMonServiceConfig.class) {
-
-                if (serviceConfiguration == null) {
-                    try {
-                        serviceConfiguration = new CEMonServiceConfig();
-                    } catch (CommonConfigException cEx) {
-                        logger.error(cEx.getMessage(), cEx);
-                    }
-                }
-
+        if (serviceConfiguration != null) {
+            try {
+                return (CEMonServiceConfig) serviceConfiguration;
+            } catch (Throwable th) {
+                logger.error(th.getMessage(), th);
             }
-
         }
-
-        return serviceConfiguration;
+        return null;
     }
 
     public static Class<?> getClassForCategory(String category) {

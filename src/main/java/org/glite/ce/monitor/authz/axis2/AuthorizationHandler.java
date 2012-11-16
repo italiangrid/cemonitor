@@ -30,7 +30,6 @@ import org.apache.axis2.AxisFault;
 import org.apache.axis2.context.MessageContext;
 import org.apache.axis2.engine.Handler;
 import org.apache.log4j.Logger;
-import org.glite.ce.commonj.configuration.CommonServiceConfig;
 import org.glite.ce.faults.AuthorizationFault;
 import org.glite.ce.monitor.configuration.CEMonServiceConfig;
 
@@ -105,10 +104,10 @@ public class AuthorizationHandler
 
         /*
          * TODO changes in configurations: replaced sslCAfiles with
-         * sslCALocation removed; sslCRLfiles add disableCRL and sslRefreshTime;
+         * CApath removed; sslCRLfiles add disableCRL and sslRefreshTime;
          */
 
-        String CALocation = sConfiguration.getGlobalAttributeAsString("sslCALocation");
+        String CALocation = sConfiguration.getGlobalAttributeAsString("CApath");
         if (CALocation != "") {
             sslConfig.put(CA_LOCATION, CALocation);
         }
@@ -159,7 +158,4 @@ public class AuthorizationHandler
         return new AxisFault(faultReason);
     }
 
-    protected CommonServiceConfig getCommonConfiguration() {
-        return CEMonServiceConfig.getConfiguration();
-    }
 }
