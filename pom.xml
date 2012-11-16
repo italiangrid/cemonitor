@@ -226,13 +226,6 @@
     </dependency>
     
     <dependency>
-      <groupId>org.glite.voms</groupId>
-      <artifactId>voms-api-java</artifactId>
-      <version>${voms.version}</version>
-      <scope>compile</scope>
-    </dependency>
-
-    <dependency>
       <groupId>org.glite.authz</groupId>
       <artifactId>pep-common</artifactId>
       <version>${pep.common.version}</version>
