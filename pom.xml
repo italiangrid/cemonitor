@@ -3,14 +3,14 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.glite.ce</groupId>
+    <groupId>org.glite</groupId>
     <artifactId>cream-parent</artifactId>
-    <version>1.15.1</version>
+    <version>1.0.0</version>
   </parent>
 
   <groupId>org.glite.ce</groupId>
   <artifactId>cemonitor</artifactId>
-  <version>${cemonitor.version}</version>
+  <version>1.16.1</version>
   <packaging>jar</packaging>
 
   <build>
@@ -201,99 +201,71 @@
     <dependency>
       <groupId>org.glite.ce</groupId>
       <artifactId>cream-common</artifactId>
-      <version>${common.java.version}</version>
+      <version>1.16.1</version>
       <scope>compile</scope>
     </dependency>
 
     <dependency>
       <groupId>org.glite.ce</groupId>
       <artifactId>cemonitor-api-java</artifactId>
-      <version>${cemonapi.version}</version>
+      <version>1.16.1</version>
       <scope>compile</scope>
     </dependency>
 
     <dependency>
       <groupId>eu.eu-emi.security</groupId>
       <artifactId>canl</artifactId>
-      <version>${canl.version}</version>
-      <scope>compile</scope>
     </dependency>
 
     <dependency>
       <groupId>eu.eu-emi.security</groupId>
 	  <artifactId>canl-java-axis2</artifactId>
-	  <version>${canl.axis2.version}</version>
     </dependency>
     
     <dependency>
       <groupId>org.glite.authz</groupId>
       <artifactId>pep-common</artifactId>
-      <version>${pep.common.version}</version>
-      <scope>compile</scope>
     </dependency>
 
     <dependency>
       <groupId>org.glite.authz</groupId>
       <artifactId>pep-java</artifactId>
-      <version>${pep.java.version}</version>
-      <scope>compile</scope>
     </dependency>
 
     <dependency>
       <groupId>org.apache.axis2</groupId>
       <artifactId>axis2</artifactId>
-      <version>${axis2.version}</version>
-      <scope>compile</scope>
     </dependency>
     
     <dependency>
       <groupId>org.apache.ws.commons.axiom</groupId>
       <artifactId>axiom-api</artifactId>
-      <version>${axiom.version}</version>
-      <scope>compile</scope>
     </dependency>
 
     <dependency>
       <groupId>wsdl4j</groupId>
       <artifactId>wsdl4j</artifactId>
-      <version>${wsdl4j.version}</version>
-      <scope>compile</scope>
     </dependency>
 
     <dependency>
       <groupId>org.condor</groupId>
       <artifactId>classad</artifactId>
-      <version>${classad.version}</version>
-      <scope>compile</scope>
     </dependency>
 
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
-      <version>${log4j.version}</version>
-      <scope>compile</scope>
     </dependency>
 
     <dependency>
       <groupId>commons-httpclient</groupId>
       <artifactId>commons-httpclient</artifactId>
-      <version>${commons.httpclient.version}</version>
-      <scope>compile</scope>
     </dependency>
 
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>${junit.version}</version>
-      <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <repositories>
-    <repository>
-      <id>emi-infn-repo</id>
-      <url>http://devel12.cnaf.infn.it:7444/pub/emi/packaging/maven</url>
-    </repository>
-  </repositories>
 
 </project>
