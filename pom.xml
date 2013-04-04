@@ -9,6 +9,7 @@
 
   <properties>
     <rpm.release>1</rpm.release>
+    <rpm.pkgname>glite-ce-monitor</rpm.pkgname>
   </properties>
   
   <parent>
@@ -201,111 +202,61 @@
         </executions>
       </plugin>
 
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>rpm-maven-plugin</artifactId>
-        <version>2.1-alpha-2</version>
-        <executions>
-          <execution>
-            <id>cemonitor</id>
-            <goals><goal>attached-rpm</goal></goals>
-            <configuration>
-              <name>glite-ce-monitor</name>
-              <summary>Web application monitoring the computing element</summary>
-              <description>The CE monitor service is a web application that 
-publishes information about the Computing Element</description>
-              <!-- changelogFile>CHANGELOG</changelogFile -->
-              <copyright>Apache Software License</copyright>
-              <release>${project.rpm.release}</release>
-              <group>Applications/Internet</group>
-              <mappings>
-                <mapping>
-                  <directory>/usr/share/glite-ce-monitor/services</directory>
-                  <directoryIncluded>true</directoryIncluded>
-                  <filemode>744</filemode>
-                  <sources>
-                    <source>
-                      <location>${project.build.directory}/axis2/cemonitor-service.jar</location>
-                      <destination>glite-ce-monitor.aar</destination>
-                    </source>
-                  </sources>
-                </mapping>
-                <mapping>
-                  <directory>/usr/share/glite-ce-monitor/modules</directory>
-                  <directoryIncluded>true</directoryIncluded>
-                  <filemode>744</filemode>
-                  <sources>
-                    <source>
-                      <location>${project.build.directory}/axis2/cemonitor-authorization.jar</location>
-                      <destination>glite-ce-monitor-authorization.mar</destination>
-                    </source>
-                  </sources>
-                </mapping>
-                <mapping>
-                  <directory>/usr/share/java</directory>
-                  <directoryIncluded>false</directoryIncluded>
-                  <filemode>744</filemode>
-                  <sources>
-                    <source>
-                      <location>${project.build.directory}/${project.artifactId}-${project.version}.jar</location>
-                      <destination>glite-ce-monitor.jar</destination>
-                    </source>
-                    <source>
-                      <location>${project.build.directory}/plugins</location>
-                      <includes>
-                        <include>*.jar</include>
-                      </includes>
-                    </source>
-                  </sources>
-                </mapping>
-                <mapping>
-                  <directory>/etc/glite-ce-monitor</directory>
-                  <directoryIncluded>true</directoryIncluded>
-                  <filemode>744</filemode>
-                  <configuration>noreplace</configuration>
-                  <sources>
-                    <source>
-                      <location>config</location>
-                      <includes>
-                        <include>*.template</include>
-                        <include>*.properties</include>
-                      </includes>
-                    </source>
-                  </sources>
-                </mapping>
-              </mappings>
-              <requires>
-                <require>glite-ce-monitor-api-java</require>
-                <require>classpathx-jaf</require>
-              </requires>
-              <defineStatements>
-                <defineStatement>_tomcat ${tomcat.pkg.name}</defineStatement>
-              </defineStatements>
-              <preinstallScriptlet>
-                <scriptFile>src/scripts/cemon-preinstall</scriptFile>
-                <fileEncoding>utf-8</fileEncoding>
-              </preinstallScriptlet>
-              <postinstallScriptlet>
-                <scriptFile>src/scripts/cemon-postinstall</scriptFile>
-                <fileEncoding>utf-8</fileEncoding>
-              </postinstallScriptlet>
-              <preremoveScriptlet>
-                <scriptFile>src/scripts/cemon-preremove</scriptFile>
-                <fileEncoding>utf-8</fileEncoding>
-              </preremoveScriptlet>
-              <postremoveScriptlet>
-                <scriptFile>src/scripts/cemon-postremove</scriptFile>
-                <fileEncoding>utf-8</fileEncoding>
-              </postremoveScriptlet>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-
     </plugins>
 
   </build>
 
+  <profiles>
+    <profile>
+      <id>rpmbuild</id>
+      <activation>
+        <property>
+          <name>rpm.repackaging</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <version>1.7</version>
+            <executions>
+              <execution>
+                <id>rpmbuild</id>
+                <phase>package</phase>
+                <goals><goal>run</goal></goals>
+                <configuration>
+                  <target>
+                    <mkdir dir="${project.build.directory}/rpmbuild/BUILD"/>
+                    <mkdir dir="${project.build.directory}/rpmbuild/RPMS"/>
+                    <mkdir dir="${project.build.directory}/rpmbuild/SOURCES"/>
+                    <mkdir dir="${project.build.directory}/rpmbuild/SPECS"/>
+                    <mkdir dir="${project.build.directory}/rpmbuild/SRPMS"/>
+                    <exec executable="/bin/tar">
+                      <arg line="--exclude .git --exclude target -zcf ${project.build.directory}/rpmbuild/SOURCES/${rpm.pkgname}.tar.gz ."/>
+                    </exec>
+                    <copy file="${project.basedir}/project/${rpm.pkgname}.spec.in" toFile="${project.build.directory}/rpmbuild/SPECS/${rpm.pkgname}.spec"/>
+                    <replace file="${project.build.directory}/rpmbuild/SPECS/${rpm.pkgname}.spec">
+                      <replacefilter token="@PKGNAME@" value="${rpm.pkgname}"/>
+                      <replacefilter token="@PKGVERSION@" value="${version}"/>
+                      <replacefilter token="@PKGRELEASE@" value="${rpm.release}"/>
+                      <replacefilter token="@MVNOPTS@" value="-Drpm.repackaging=false -DskipTests"/>
+                      <replacefilter token="@TOMCATPKG@" value="${tomcat.pkg.name}"/>
+                    </replace>
+                    <exec executable="/usr/bin/rpmbuild">
+                      <arg line="-ba --define '_topdir ${project.build.directory}/rpmbuild' ${project.build.directory}/rpmbuild/SPECS/${rpm.pkgname}.spec"/>
+                    </exec>
+                  </target>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 
   <dependencies>
   
