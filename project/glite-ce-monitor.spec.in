@@ -9,7 +9,7 @@ Group: System Environment/Libraries
 BuildArch: noarch
 BuildRequires: maven
 Requires: glite-ce-monitor-api-java
-Requires(post): openssl
+Obsoletes: glite-ce-ce-plugin
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 AutoReqProv: yes
 Source: %{name}.tar.gz
@@ -38,6 +38,7 @@ cp %{_builddir}/%{name}-%{version}/target/plugins/DoNotSendNotificationAction.ja
 cp %{_builddir}/%{name}-%{version}/target/plugins/RegExProcessor.jar %{buildroot}/usr/share/java/glite-ce-monitor-RegExProcessor.jar
 cp %{_builddir}/%{name}-%{version}/target/plugins/SendExpiredNotificationAction.jar %{buildroot}/usr/share/java/glite-ce-monitor-SendExpiredNotificationAction.jar
 cp %{_builddir}/%{name}-%{version}/target/plugins/SendNotificationAction.jar %{buildroot}/usr/share/java/glite-ce-monitor-SendNotificationAction.jar
+cp %{_builddir}/%{name}-%{version}/target/plugins/CESensor.jar %{buildroot}/usr/share/java/glite-ce-ce-plugin.jar
 mkdir -p %{buildroot}/usr/share/glite-ce-monitor/services
 cp %{_builddir}/%{name}-%{version}/target/axis2/cemonitor-service.jar %{buildroot}/usr/share/glite-ce-monitor/services/glite-ce-monitor.aar
 mkdir -p %{buildroot}/usr/share/glite-ce-monitor/modules
