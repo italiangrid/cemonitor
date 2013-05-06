@@ -1,0 +1,193 @@
+Summary: Web application monitoring the computing element
+Name: @PKGNAME@
+Version: @PKGVERSION@
+Release: @PKGRELEASE@
+License: Apache Software License
+Vendor: EMI
+URL: http://glite.cern.ch/
+Group: System Environment/Libraries
+BuildArch: noarch
+BuildRequires: maven
+Requires: glite-ce-monitor-api-java, classpathx-jaf, emi-trustmanager-axis2
+Requires(post): openssl
+BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+AutoReqProv: yes
+Source: %{name}.tar.gz
+
+%global _tomcat @TOMCATPKG@
+
+%description
+The CE monitor service is a web application that 
+publishes information about the Computing Element
+
+%prep 
+
+%setup -c -q 
+
+%build
+mvn @MVNOPTS@ compile
+
+%install
+rm -rf %{buildroot}
+mkdir -p %{buildroot}
+mvn @MVNOPTS@ install
+mkdir -p %{buildroot}/usr/share/java
+cp %{_builddir}/%{name}-%{version}/target/cemonitor-@PKGVERSION@.jar %{buildroot}/usr/share/java/glite-ce-monitor.jar
+cp %{_builddir}/%{name}-%{version}/target/plugins/ClassAdProcessor.jar %{buildroot}/usr/share/java/glite-ce-monitor-ClassAdProcessor.jar
+cp %{_builddir}/%{name}-%{version}/target/plugins/DoNotSendNotificationAction.jar %{buildroot}/usr/share/java/glite-ce-monitor-DoNotSendNotificationAction.jar
+cp %{_builddir}/%{name}-%{version}/target/plugins/RegExProcessor.jar %{buildroot}/usr/share/java/glite-ce-monitor-RegExProcessor.jar
+cp %{_builddir}/%{name}-%{version}/target/plugins/SendExpiredNotificationAction.jar %{buildroot}/usr/share/java/glite-ce-monitor-SendExpiredNotificationAction.jar
+cp %{_builddir}/%{name}-%{version}/target/plugins/SendNotificationAction.jar %{buildroot}/usr/share/java/glite-ce-monitor-SendNotificationAction.jar
+cp %{_builddir}/%{name}-%{version}/target/plugins/CESensor.jar %{buildroot}/usr/share/java/glite-ce-ce-plugin.jar
+mkdir -p %{buildroot}/usr/share/glite-ce-monitor/services
+cp %{_builddir}/%{name}-%{version}/target/axis2/cemonitor-service.jar %{buildroot}/usr/share/glite-ce-monitor/services/glite-ce-monitor.aar
+mkdir -p %{buildroot}/usr/share/glite-ce-monitor/modules
+cp %{_builddir}/%{name}-%{version}/target/axis2/cemonitor-authorization.jar %{buildroot}/usr/share/glite-ce-monitor/modules/glite-ce-monitor-authorization.mar
+mkdir -p %{buildroot}/etc/glite-ce-monitor
+cp %{_builddir}/%{name}-%{version}/config/* %{buildroot}/etc/glite-ce-monitor
+
+
+%clean
+rm -rf %{buildroot}
+
+%pre
+for((idx=0; idx<5; idx++)) ; do
+  /sbin/service %{_tomcat} stop
+  if [ $? == 0 ] ; then idx=5; else sleep 5; fi
+done
+
+%if 0%{?el6}
+# Remove the axis1-based installation 
+if [ -d /var/lib/%{_tomcat}/webapps/ce-monitor ] ; then
+  rm -rf /var/lib/%{_tomcat}/webapps/ce-monitor
+  rm -f /etc/%{_tomcat}/Catalina/localhost/ce-monitor.xml
+  rm -rf /var/cache/%{_tomcat}/work/Catalina/localhost/ce-monitor
+fi
+%endif
+
+%post
+# Do not overwrite axis2-based installation
+if [ ! -L /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/services/glite-ce-monitor.aar ] ; then
+
+  cp -R /usr/share/axis2/webapp /var/lib/%{_tomcat}/webapps/ce-monitor || exit 1
+  
+  ln -s /usr/share/java/jclassads/cedar.jar /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/lib
+  ln -s /usr/share/java/jclassads/classad.jar /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/lib
+  ln -s /usr/share/java/argus-pep-api-java.jar /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/lib
+  ln -s /usr/share/java/argus-pep-common.jar /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/lib
+  ln -s /usr/share/java/trustmanager.jar /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/lib
+  ln -s /usr/share/java/bcprov.jar /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/lib
+  ln -s /usr/share/java/glite-ce-common-java.jar /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/lib
+  ln -s /usr/share/java/glite-ce-monitor-api-java.jar /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/lib
+  ln -s /usr/share/java/glite-ce-monitor.jar /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/lib
+  ln -s /usr/share/java/trustmanager-axis2.jar /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/lib
+  ln -s /usr/share/java/voms-api-java.jar /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/lib
+
+%if 0%{?el6} 
+  # set allowLinking option for tomcat6
+  mkdir /var/lib/%{_tomcat}/webapps/ce-monitor/META-INF
+  echo '<Context override="true" allowLinking="true"></Context>' > /var/lib/%{_tomcat}/webapps/ce-monitor/META-INF/context.xml
+%endif
+
+  ln -s /usr/share/glite-ce-monitor/modules/glite-ce-monitor-authorization.mar /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/modules
+  rm /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/modules/modules.list
+  for item in `ls /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/modules/*.mar`; do 
+    echo `basename $item` >> /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/modules/modules.list ; 
+  done
+  
+  ln -s /usr/share/glite-ce-monitor/services/glite-ce-monitor.aar /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/services
+  rm /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/services/services.list
+  for item in `ls /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/services/*.aar`; do 
+    echo `basename $item` >> /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/services/services.list ; 
+  done
+  
+fi
+
+# Axis Servlet configuration
+# customization of axis2.xml (admin password is deprecated)
+REPLACE1='s|__CHANGE_SERVICE__|/etc/glite-ce-monitor/cemonitor-config.xml|g'
+REPLACE2='s|__CHANGE_LOG4J__|/etc/glite-ce-monitor/log4j.properties|g'
+TMPPWD=`openssl rand -base64 15`
+REPLACE3='s|__CHANGE_PWD__|'$TMPPWD'|g'
+  
+sed "$REPLACE1 ; $REPLACE2 ; $REPLACE3" /etc/glite-ce-common-java/axis2.xml > /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/conf/axis2.xml
+chmod 600 /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/conf/axis2.xml
+chown tomcat.tomcat /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/conf/axis2.xml
+# cannot use symlinks for the following files:
+cp -f /etc/glite-ce-common-java/web.xml /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/
+
+if [ $1 -eq 1 ] ; then  
+# Creation of the back-end and log dir
+  if [ ! "x`grep tomcat /etc/passwd`" == "x" ] ; then
+    mkdir -p /var/cemonitor
+    chown tomcat:tomcat /var/cemonitor
+    chmod 755 /var/cemonitor
+    
+    mkdir -p /var/log/cemonitor
+    chown tomcat:tomcat /var/log/cemonitor
+    chmod 755 /var/log/cemonitor
+  fi
+
+  /sbin/service %{_tomcat} start
+
+fi
+
+%preun
+if [ $1 -eq 0 ] ; then
+
+  for((idx=0; idx<5; idx++)) ; do
+    /sbin/service %{_tomcat} stop
+    if [ $? == 0 ] ; then idx=5; else sleep 5; fi
+  done
+
+  if [ -d /var/cemonitor ] ; then
+    rm -rf /var/cemonitor
+  fi
+  
+  if [ -d /var/lib/%{_tomcat}/webapps/ce-monitor ] ; then
+    rm -rf /var/lib/%{_tomcat}/webapps/ce-monitor
+  fi
+
+  if [ -e /etc/%{_tomcat}/Catalina/localhost/ce-monitor.xml ] ; then
+    rm -f /etc/%{_tomcat}/Catalina/localhost/ce-monitor.xml
+  fi
+
+fi
+
+%postun
+/sbin/service %{_tomcat} start
+
+%files
+%defattr(-,root,root)
+%dir /etc/glite-ce-monitor/
+%config(noreplace) /etc/glite-ce-monitor/cemonitor-config-argus.xml.template
+%config(noreplace) /etc/glite-ce-monitor/cemonitor-config-gjaf.xml.template
+%config(noreplace) /etc/glite-ce-monitor/log4j.properties
+/usr/share/java/glite-ce-monitor-ClassAdProcessor.jar
+/usr/share/java/glite-ce-monitor-DoNotSendNotificationAction.jar
+/usr/share/java/glite-ce-monitor-RegExProcessor.jar
+/usr/share/java/glite-ce-monitor-SendExpiredNotificationAction.jar
+/usr/share/java/glite-ce-monitor-SendNotificationAction.jar
+/usr/share/java/glite-ce-monitor.jar
+/usr/share/glite-ce-monitor/modules/glite-ce-monitor-authorization.mar
+/usr/share/glite-ce-monitor/services/glite-ce-monitor.aar
+
+%package -n glite-ce-ce-plugin
+Summary: CE resource plugin for CEMonitor
+Group: System Environment/Libraries
+Requires: glite-ce-monitor
+
+%description -n glite-ce-ce-plugin
+The CE plugin is a sensor for the CE monitor service that keeps track
+of the changes of the CE resource
+
+%files  -n glite-ce-ce-plugin
+%defattr(-,root,root)
+/usr/share/java/glite-ce-ce-plugin.jar
+
+
+%changelog
+* Fri Aug 31 2012 CREAM group <cream-support@lists.infn.it> - @PKGVERSION@-@PKGRELEASE@
+- New major release
+
+
