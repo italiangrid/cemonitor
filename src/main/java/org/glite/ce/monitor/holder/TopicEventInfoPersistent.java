@@ -40,7 +40,7 @@ import javax.naming.directory.DirContext;
 import javax.naming.directory.InitialDirContext;
 
 import org.apache.log4j.Logger;
-import org.glite.ce.monitor.jndi.provider.fscachedprovider.CEGeneralAttributes;
+import org.glite.ce.commonj.jndi.provider.fscachedprovider.CEGeneralAttributes;
 import org.glite.ce.monitorapij.sensor.Sensor;
 import org.glite.ce.monitorapij.sensor.SensorEvent;
 import org.glite.ce.monitorapij.resource.types.Dialect;
