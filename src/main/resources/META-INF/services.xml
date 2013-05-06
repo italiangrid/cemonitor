@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This file was auto-generated from WSDL -->
+<!-- by the Apache Axis2 version: 1.6.1  Built on : Aug 31, 2011 (12:22:40 CEST) -->
+<serviceGroup>
+    <service name="CEMonitor" scope="application">
+        <messageReceivers>
+            <messageReceiver mep="http://www.w3.org/ns/wsdl/in-out" class="org.glite.ce.monitorapij.ws.CEMonitorMessageReceiverInOut"/>
+        </messageReceivers>
+        <module ref="cemonitor-authorization"/>
+        <parameter name="ServiceClass">org.glite.ce.monitor.ws.CEMonitorService</parameter>
+        <parameter name="useOriginalwsdl">true</parameter>
+        <parameter name="modifyUserWSDLPortAddress">true</parameter>
+        <operation name="ResumeSubscription" mep="http://www.w3.org/ns/wsdl/in-out" namespace="http://glite.org/ce/monitorapij/ws">
+            <actionMapping>http://glite.org/ce/monitorapij/ws/ResumeSubscription</actionMapping>
+            <outputActionMapping>http://glite.org/ce/monitorapij/ws/CEMonitorPort/ResumeSubscriptionResponse</outputActionMapping>
+            <faultActionMapping faultName="authorizationFault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/ResumeSubscription/Fault/authorizationFault</faultActionMapping>
+            <faultActionMapping faultName="Authorization_Fault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/ResumeSubscription/Fault/authorizationFault</faultActionMapping>
+            <faultActionMapping faultName="Authorization_Fault_Exception">http://glite.org/ce/monitorapij/ws/CEMonitorPort/ResumeSubscription/Fault/authorizationFault</faultActionMapping>
+            <faultActionMapping faultName="authenticationFault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/ResumeSubscription/Fault/authenticationFault</faultActionMapping>
+            <faultActionMapping faultName="Authentication_Fault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/ResumeSubscription/Fault/authenticationFault</faultActionMapping>
+            <faultActionMapping faultName="Authentication_Fault_Exception">http://glite.org/ce/monitorapij/ws/CEMonitorPort/ResumeSubscription/Fault/authenticationFault</faultActionMapping>
+            <faultActionMapping faultName="subscriptionNotFoundFault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/ResumeSubscription/Fault/subscriptionNotFoundFault</faultActionMapping>
+            <faultActionMapping faultName="SubscriptionNotFound_Fault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/ResumeSubscription/Fault/subscriptionNotFoundFault</faultActionMapping>
+            <faultActionMapping faultName="SubscriptionNotFound_Fault_Exception">http://glite.org/ce/monitorapij/ws/CEMonitorPort/ResumeSubscription/Fault/subscriptionNotFoundFault</faultActionMapping>
+            <faultActionMapping faultName="genericFault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/ResumeSubscription/Fault/genericFault</faultActionMapping>
+            <faultActionMapping faultName="Generic_Fault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/ResumeSubscription/Fault/genericFault</faultActionMapping>
+            <faultActionMapping faultName="Generic_Fault_Exception">http://glite.org/ce/monitorapij/ws/CEMonitorPort/ResumeSubscription/Fault/genericFault</faultActionMapping>
+        </operation>
+        <operation name="GetSubscriptionRef" mep="http://www.w3.org/ns/wsdl/in-out" namespace="http://glite.org/ce/monitorapij/ws">
+            <actionMapping>http://glite.org/ce/monitorapij/ws/GetSubscriptionList</actionMapping>
+            <outputActionMapping>http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetSubscriptionRefResponse</outputActionMapping>
+            <faultActionMapping faultName="authorizationFault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetSubscriptionRef/Fault/authorizationFault</faultActionMapping>
+            <faultActionMapping faultName="Authorization_Fault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetSubscriptionRef/Fault/authorizationFault</faultActionMapping>
+            <faultActionMapping faultName="Authorization_Fault_Exception">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetSubscriptionRef/Fault/authorizationFault</faultActionMapping>
+            <faultActionMapping faultName="authenticationFault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetSubscriptionRef/Fault/authenticationFault</faultActionMapping>
+            <faultActionMapping faultName="Authentication_Fault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetSubscriptionRef/Fault/authenticationFault</faultActionMapping>
+            <faultActionMapping faultName="Authentication_Fault_Exception">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetSubscriptionRef/Fault/authenticationFault</faultActionMapping>
+            <faultActionMapping faultName="genericFault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetSubscriptionRef/Fault/genericFault</faultActionMapping>
+            <faultActionMapping faultName="Generic_Fault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetSubscriptionRef/Fault/genericFault</faultActionMapping>
+            <faultActionMapping faultName="Generic_Fault_Exception">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetSubscriptionRef/Fault/genericFault</faultActionMapping>
+        </operation>
+        <operation name="GetInfo" mep="http://www.w3.org/ns/wsdl/in-out" namespace="http://glite.org/ce/monitorapij/ws">
+            <actionMapping>http://glite.org/ce/monitorapij/ws/GetInfo</actionMapping>
+            <outputActionMapping>http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetInfoResponse</outputActionMapping>
+            <faultActionMapping faultName="authorizationFault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetInfo/Fault/authorizationFault</faultActionMapping>
+            <faultActionMapping faultName="Authorization_Fault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetInfo/Fault/authorizationFault</faultActionMapping>
+            <faultActionMapping faultName="Authorization_Fault_Exception">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetInfo/Fault/authorizationFault</faultActionMapping>
+            <faultActionMapping faultName="authenticationFault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetInfo/Fault/authenticationFault</faultActionMapping>
+            <faultActionMapping faultName="Authentication_Fault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetInfo/Fault/authenticationFault</faultActionMapping>
+            <faultActionMapping faultName="Authentication_Fault_Exception">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetInfo/Fault/authenticationFault</faultActionMapping>
+            <faultActionMapping faultName="genericFault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetInfo/Fault/genericFault</faultActionMapping>
+            <faultActionMapping faultName="Generic_Fault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetInfo/Fault/genericFault</faultActionMapping>
+            <faultActionMapping faultName="Generic_Fault_Exception">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetInfo/Fault/genericFault</faultActionMapping>
+        </operation>
+        <operation name="Unsubscribe" mep="http://www.w3.org/ns/wsdl/in-out" namespace="http://glite.org/ce/monitorapij/ws">
+            <actionMapping>http://glite.org/ce/monitorapij/ws/Unubscribe</actionMapping>
+            <outputActionMapping>http://glite.org/ce/monitorapij/ws/CEMonitorPort/UnsubscribeResponse</outputActionMapping>
+            <faultActionMapping faultName="authorizationFault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/Unsubscribe/Fault/authorizationFault</faultActionMapping>
+            <faultActionMapping faultName="Authorization_Fault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/Unsubscribe/Fault/authorizationFault</faultActionMapping>
+            <faultActionMapping faultName="Authorization_Fault_Exception">http://glite.org/ce/monitorapij/ws/CEMonitorPort/Unsubscribe/Fault/authorizationFault</faultActionMapping>
+            <faultActionMapping faultName="authenticationFault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/Unsubscribe/Fault/authenticationFault</faultActionMapping>
+            <faultActionMapping faultName="Authentication_Fault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/Unsubscribe/Fault/authenticationFault</faultActionMapping>
+            <faultActionMapping faultName="Authentication_Fault_Exception">http://glite.org/ce/monitorapij/ws/CEMonitorPort/Unsubscribe/Fault/authenticationFault</faultActionMapping>
+            <faultActionMapping faultName="subscriptionNotFoundFault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/Unsubscribe/Fault/subscriptionNotFoundFault</faultActionMapping>
+            <faultActionMapping faultName="SubscriptionNotFound_Fault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/Unsubscribe/Fault/subscriptionNotFoundFault</faultActionMapping>
+            <faultActionMapping faultName="SubscriptionNotFound_Fault_Exception">http://glite.org/ce/monitorapij/ws/CEMonitorPort/Unsubscribe/Fault/subscriptionNotFoundFault</faultActionMapping>
+            <faultActionMapping faultName="genericFault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/Unsubscribe/Fault/genericFault</faultActionMapping>
+            <faultActionMapping faultName="Generic_Fault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/Unsubscribe/Fault/genericFault</faultActionMapping>
+            <faultActionMapping faultName="Generic_Fault_Exception">http://glite.org/ce/monitorapij/ws/CEMonitorPort/Unsubscribe/Fault/genericFault</faultActionMapping>
+        </operation>
+        <operation name="Update" mep="http://www.w3.org/ns/wsdl/in-out" namespace="http://glite.org/ce/monitorapij/ws">
+            <actionMapping>http://glite.org/ce/monitorapij/ws/Update</actionMapping>
+            <outputActionMapping>http://glite.org/ce/monitorapij/ws/CEMonitorPort/UpdateResponse</outputActionMapping>
+            <faultActionMapping faultName="authorizationFault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/Update/Fault/authorizationFault</faultActionMapping>
+            <faultActionMapping faultName="Authorization_Fault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/Update/Fault/authorizationFault</faultActionMapping>
+            <faultActionMapping faultName="Authorization_Fault_Exception">http://glite.org/ce/monitorapij/ws/CEMonitorPort/Update/Fault/authorizationFault</faultActionMapping>
+            <faultActionMapping faultName="authenticationFault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/Update/Fault/authenticationFault</faultActionMapping>
+            <faultActionMapping faultName="Authentication_Fault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/Update/Fault/authenticationFault</faultActionMapping>
+            <faultActionMapping faultName="Authentication_Fault_Exception">http://glite.org/ce/monitorapij/ws/CEMonitorPort/Update/Fault/authenticationFault</faultActionMapping>
+            <faultActionMapping faultName="subscriptionFault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/Update/Fault/subscriptionFault</faultActionMapping>
+            <faultActionMapping faultName="Subscription_Fault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/Update/Fault/subscriptionFault</faultActionMapping>
+            <faultActionMapping faultName="Subscription_Fault_Exception">http://glite.org/ce/monitorapij/ws/CEMonitorPort/Update/Fault/subscriptionFault</faultActionMapping>
+            <faultActionMapping faultName="genericFault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/Update/Fault/genericFault</faultActionMapping>
+            <faultActionMapping faultName="Generic_Fault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/Update/Fault/genericFault</faultActionMapping>
+            <faultActionMapping faultName="Generic_Fault_Exception">http://glite.org/ce/monitorapij/ws/CEMonitorPort/Update/Fault/genericFault</faultActionMapping>
+        </operation>
+        <operation name="Subscribe" mep="http://www.w3.org/ns/wsdl/in-out" namespace="http://glite.org/ce/monitorapij/ws">
+            <actionMapping>http://glite.org/ce/monitorapij/ws/Subscribe</actionMapping>
+            <outputActionMapping>http://glite.org/ce/monitorapij/ws/CEMonitorPort/SubscribeResponse</outputActionMapping>
+            <faultActionMapping faultName="authorizationFault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/Subscribe/Fault/authorizationFault</faultActionMapping>
+            <faultActionMapping faultName="Authorization_Fault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/Subscribe/Fault/authorizationFault</faultActionMapping>
+            <faultActionMapping faultName="Authorization_Fault_Exception">http://glite.org/ce/monitorapij/ws/CEMonitorPort/Subscribe/Fault/authorizationFault</faultActionMapping>
+            <faultActionMapping faultName="authenticationFault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/Subscribe/Fault/authenticationFault</faultActionMapping>
+            <faultActionMapping faultName="Authentication_Fault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/Subscribe/Fault/authenticationFault</faultActionMapping>
+            <faultActionMapping faultName="Authentication_Fault_Exception">http://glite.org/ce/monitorapij/ws/CEMonitorPort/Subscribe/Fault/authenticationFault</faultActionMapping>
+            <faultActionMapping faultName="subscriptionFault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/Subscribe/Fault/subscriptionFault</faultActionMapping>
+            <faultActionMapping faultName="Subscription_Fault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/Subscribe/Fault/subscriptionFault</faultActionMapping>
+            <faultActionMapping faultName="Subscription_Fault_Exception">http://glite.org/ce/monitorapij/ws/CEMonitorPort/Subscribe/Fault/subscriptionFault</faultActionMapping>
+            <faultActionMapping faultName="genericFault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/Subscribe/Fault/genericFault</faultActionMapping>
+            <faultActionMapping faultName="Generic_Fault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/Subscribe/Fault/genericFault</faultActionMapping>
+            <faultActionMapping faultName="Generic_Fault_Exception">http://glite.org/ce/monitorapij/ws/CEMonitorPort/Subscribe/Fault/genericFault</faultActionMapping>
+        </operation>
+        <operation name="GetEvent" mep="http://www.w3.org/ns/wsdl/in-out" namespace="http://glite.org/ce/monitorapij/ws">
+            <actionMapping>http://glite.org/ce/monitorapij/ws/GetEvent</actionMapping>
+            <outputActionMapping>http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetEventResponse</outputActionMapping>
+            <faultActionMapping faultName="authorizationFault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetEvent/Fault/authorizationFault</faultActionMapping>
+            <faultActionMapping faultName="Authorization_Fault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetEvent/Fault/authorizationFault</faultActionMapping>
+            <faultActionMapping faultName="Authorization_Fault_Exception">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetEvent/Fault/authorizationFault</faultActionMapping>
+            <faultActionMapping faultName="authenticationFault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetEvent/Fault/authenticationFault</faultActionMapping>
+            <faultActionMapping faultName="Authentication_Fault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetEvent/Fault/authenticationFault</faultActionMapping>
+            <faultActionMapping faultName="Authentication_Fault_Exception">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetEvent/Fault/authenticationFault</faultActionMapping>
+            <faultActionMapping faultName="dialectNotSupportedFault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetEvent/Fault/dialectNotSupportedFault</faultActionMapping>
+            <faultActionMapping faultName="DialectNotSupported_Fault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetEvent/Fault/dialectNotSupportedFault</faultActionMapping>
+            <faultActionMapping faultName="DialectNotSupported_Fault_Exception">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetEvent/Fault/dialectNotSupportedFault</faultActionMapping>
+            <faultActionMapping faultName="genericFault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetEvent/Fault/genericFault</faultActionMapping>
+            <faultActionMapping faultName="Generic_Fault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetEvent/Fault/genericFault</faultActionMapping>
+            <faultActionMapping faultName="Generic_Fault_Exception">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetEvent/Fault/genericFault</faultActionMapping>
+            <faultActionMapping faultName="topicNotSupportedFault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetEvent/Fault/topicNotSupportedFault</faultActionMapping>
+            <faultActionMapping faultName="TopicNotSupported_Fault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetEvent/Fault/topicNotSupportedFault</faultActionMapping>
+            <faultActionMapping faultName="TopicNotSupported_Fault_Exception">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetEvent/Fault/topicNotSupportedFault</faultActionMapping>
+        </operation>
+        <operation name="GetTopics" mep="http://www.w3.org/ns/wsdl/in-out" namespace="http://glite.org/ce/monitorapij/ws">
+            <actionMapping>http://glite.org/ce/monitorapij/ws/GetTopics</actionMapping>
+            <outputActionMapping>http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetTopicsResponse</outputActionMapping>
+            <faultActionMapping faultName="authorizationFault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetTopics/Fault/authorizationFault</faultActionMapping>
+            <faultActionMapping faultName="Authorization_Fault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetTopics/Fault/authorizationFault</faultActionMapping>
+            <faultActionMapping faultName="Authorization_Fault_Exception">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetTopics/Fault/authorizationFault</faultActionMapping>
+            <faultActionMapping faultName="authenticationFault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetTopics/Fault/authenticationFault</faultActionMapping>
+            <faultActionMapping faultName="Authentication_Fault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetTopics/Fault/authenticationFault</faultActionMapping>
+            <faultActionMapping faultName="Authentication_Fault_Exception">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetTopics/Fault/authenticationFault</faultActionMapping>
+            <faultActionMapping faultName="genericFault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetTopics/Fault/genericFault</faultActionMapping>
+            <faultActionMapping faultName="Generic_Fault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetTopics/Fault/genericFault</faultActionMapping>
+            <faultActionMapping faultName="Generic_Fault_Exception">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetTopics/Fault/genericFault</faultActionMapping>
+        </operation>
+        <operation name="GetSubscription" mep="http://www.w3.org/ns/wsdl/in-out" namespace="http://glite.org/ce/monitorapij/ws">
+            <actionMapping>http://glite.org/ce/monitorapij/ws/GetSubscriptionInfo</actionMapping>
+            <outputActionMapping>http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetSubscriptionResponse</outputActionMapping>
+            <faultActionMapping faultName="authorizationFault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetSubscription/Fault/authorizationFault</faultActionMapping>
+            <faultActionMapping faultName="Authorization_Fault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetSubscription/Fault/authorizationFault</faultActionMapping>
+            <faultActionMapping faultName="Authorization_Fault_Exception">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetSubscription/Fault/authorizationFault</faultActionMapping>
+            <faultActionMapping faultName="authenticationFault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetSubscription/Fault/authenticationFault</faultActionMapping>
+            <faultActionMapping faultName="Authentication_Fault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetSubscription/Fault/authenticationFault</faultActionMapping>
+            <faultActionMapping faultName="Authentication_Fault_Exception">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetSubscription/Fault/authenticationFault</faultActionMapping>
+            <faultActionMapping faultName="genericFault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetSubscription/Fault/genericFault</faultActionMapping>
+            <faultActionMapping faultName="Generic_Fault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetSubscription/Fault/genericFault</faultActionMapping>
+            <faultActionMapping faultName="Generic_Fault_Exception">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetSubscription/Fault/genericFault</faultActionMapping>
+        </operation>
+        <operation name="Ping" mep="http://www.w3.org/ns/wsdl/in-out" namespace="http://glite.org/ce/monitorapij/ws">
+            <actionMapping>http://glite.org/ce/monitorapij/ws/Ping</actionMapping>
+            <outputActionMapping>http://glite.org/ce/monitorapij/ws/CEMonitorPort/PingResponse</outputActionMapping>
+            <faultActionMapping faultName="authorizationFault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/Ping/Fault/authorizationFault</faultActionMapping>
+            <faultActionMapping faultName="Authorization_Fault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/Ping/Fault/authorizationFault</faultActionMapping>
+            <faultActionMapping faultName="Authorization_Fault_Exception">http://glite.org/ce/monitorapij/ws/CEMonitorPort/Ping/Fault/authorizationFault</faultActionMapping>
+            <faultActionMapping faultName="authenticationFault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/Ping/Fault/authenticationFault</faultActionMapping>
+            <faultActionMapping faultName="Authentication_Fault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/Ping/Fault/authenticationFault</faultActionMapping>
+            <faultActionMapping faultName="Authentication_Fault_Exception">http://glite.org/ce/monitorapij/ws/CEMonitorPort/Ping/Fault/authenticationFault</faultActionMapping>
+        </operation>
+        <operation name="GetTopicEvent" mep="http://www.w3.org/ns/wsdl/in-out" namespace="http://glite.org/ce/monitorapij/ws">
+            <actionMapping>http://glite.org/ce/monitorapij/ws/GetTopicEvent</actionMapping>
+            <outputActionMapping>http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetTopicEventResponse</outputActionMapping>
+            <faultActionMapping faultName="authorizationFault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetTopicEvent/Fault/authorizationFault</faultActionMapping>
+            <faultActionMapping faultName="Authorization_Fault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetTopicEvent/Fault/authorizationFault</faultActionMapping>
+            <faultActionMapping faultName="Authorization_Fault_Exception">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetTopicEvent/Fault/authorizationFault</faultActionMapping>
+            <faultActionMapping faultName="authenticationFault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetTopicEvent/Fault/authenticationFault</faultActionMapping>
+            <faultActionMapping faultName="Authentication_Fault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetTopicEvent/Fault/authenticationFault</faultActionMapping>
+            <faultActionMapping faultName="Authentication_Fault_Exception">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetTopicEvent/Fault/authenticationFault</faultActionMapping>
+            <faultActionMapping faultName="dialectNotSupportedFault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetTopicEvent/Fault/dialectNotSupportedFault</faultActionMapping>
+            <faultActionMapping faultName="DialectNotSupported_Fault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetTopicEvent/Fault/dialectNotSupportedFault</faultActionMapping>
+            <faultActionMapping faultName="DialectNotSupported_Fault_Exception">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetTopicEvent/Fault/dialectNotSupportedFault</faultActionMapping>
+            <faultActionMapping faultName="genericFault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetTopicEvent/Fault/genericFault</faultActionMapping>
+            <faultActionMapping faultName="Generic_Fault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetTopicEvent/Fault/genericFault</faultActionMapping>
+            <faultActionMapping faultName="Generic_Fault_Exception">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetTopicEvent/Fault/genericFault</faultActionMapping>
+            <faultActionMapping faultName="topicNotSupportedFault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetTopicEvent/Fault/topicNotSupportedFault</faultActionMapping>
+            <faultActionMapping faultName="TopicNotSupported_Fault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetTopicEvent/Fault/topicNotSupportedFault</faultActionMapping>
+            <faultActionMapping faultName="TopicNotSupported_Fault_Exception">http://glite.org/ce/monitorapij/ws/CEMonitorPort/GetTopicEvent/Fault/topicNotSupportedFault</faultActionMapping>
+        </operation>
+        <operation name="Notify" mep="http://www.w3.org/ns/wsdl/in-out" namespace="http://glite.org/ce/monitorapij/ws">
+            <actionMapping>http://glite.org/ce/monitorapij/ws/Notify</actionMapping>
+            <outputActionMapping>http://glite.org/ce/monitorapij/ws/CEMonitorPort/notifyResponse</outputActionMapping>
+        </operation>
+        <operation name="PauseSubscription" mep="http://www.w3.org/ns/wsdl/in-out" namespace="http://glite.org/ce/monitorapij/ws">
+            <actionMapping>http://glite.org/ce/monitorapij/ws/PauseSubscription</actionMapping>
+            <outputActionMapping>http://glite.org/ce/monitorapij/ws/CEMonitorPort/PauseSubscriptionResponse</outputActionMapping>
+            <faultActionMapping faultName="authorizationFault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/PauseSubscription/Fault/authorizationFault</faultActionMapping>
+            <faultActionMapping faultName="Authorization_Fault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/PauseSubscription/Fault/authorizationFault</faultActionMapping>
+            <faultActionMapping faultName="Authorization_Fault_Exception">http://glite.org/ce/monitorapij/ws/CEMonitorPort/PauseSubscription/Fault/authorizationFault</faultActionMapping>
+            <faultActionMapping faultName="authenticationFault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/PauseSubscription/Fault/authenticationFault</faultActionMapping>
+            <faultActionMapping faultName="Authentication_Fault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/PauseSubscription/Fault/authenticationFault</faultActionMapping>
+            <faultActionMapping faultName="Authentication_Fault_Exception">http://glite.org/ce/monitorapij/ws/CEMonitorPort/PauseSubscription/Fault/authenticationFault</faultActionMapping>
+            <faultActionMapping faultName="subscriptionNotFoundFault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/PauseSubscription/Fault/subscriptionNotFoundFault</faultActionMapping>
+            <faultActionMapping faultName="SubscriptionNotFound_Fault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/PauseSubscription/Fault/subscriptionNotFoundFault</faultActionMapping>
+            <faultActionMapping faultName="SubscriptionNotFound_Fault_Exception">http://glite.org/ce/monitorapij/ws/CEMonitorPort/PauseSubscription/Fault/subscriptionNotFoundFault</faultActionMapping>
+            <faultActionMapping faultName="genericFault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/PauseSubscription/Fault/genericFault</faultActionMapping>
+            <faultActionMapping faultName="Generic_Fault">http://glite.org/ce/monitorapij/ws/CEMonitorPort/PauseSubscription/Fault/genericFault</faultActionMapping>
+            <faultActionMapping faultName="Generic_Fault_Exception">http://glite.org/ce/monitorapij/ws/CEMonitorPort/PauseSubscription/Fault/genericFault</faultActionMapping>
+        </operation>
+    </service>
+</serviceGroup>
