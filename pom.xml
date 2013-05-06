@@ -2,16 +2,27 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+  <groupId>org.glite.ce</groupId>
+  <artifactId>cemonitor</artifactId>
+  <version>1.14.2</version>
+  <packaging>jar</packaging>
+
+  <properties>
+    <rpm.release>1</rpm.release>
+    <rpm.pkgname>glite-ce-monitor</rpm.pkgname>
+  </properties>
+  
   <parent>
-    <groupId>org.glite.ce</groupId>
+    <groupId>org.glite</groupId>
     <artifactId>cream-parent</artifactId>
-    <version>1.15</version>
+    <version>0.8.0</version>
   </parent>
 
-  <groupId>org.glite.ce.monitor</groupId>
-  <artifactId>cemonitor</artifactId>
-  <version>${cemonitor.version}</version>
-  <packaging>jar</packaging>
+  <scm>
+    <connection>scm:git:git://github.com/italiangrid/cemonitor.git</connection>
+    <url>https://github.com/italiangrid/cemonitor</url>
+    <developerConnection>scm:git:ssh://git@github.com:italiangrid/cemonitor.git</developerConnection>
+  </scm>
 
   <build>
   
@@ -30,6 +41,164 @@
         <artifactId>maven-jar-plugin</artifactId>
         <version>2.4</version>
         <executions>
+
+          <execution>
+            <id>authorization</id>
+            <phase>package</phase>
+            <goals><goal>jar</goal></goals>
+            <configuration>
+              <finalName>cemonitor-authorization</finalName>
+              <outputDirectory>${project.build.directory}/axis2</outputDirectory>
+              <includes>
+                <include>**/authz/axis2/*</include>
+                <include>**/module.xml</include>
+              </includes>
+              <archive>
+                <index>true</index>
+                <manifest><addDefaultSpecificationEntries/></manifest>
+              </archive>
+            </configuration>
+          </execution>
+
+          <execution>
+            <id>service</id>
+            <phase>package</phase>
+            <goals><goal>jar</goal></goals>
+            <configuration>
+              <finalName>cemonitor-service</finalName>
+              <outputDirectory>${project.build.directory}/axis2</outputDirectory>
+              <includes>
+                <include>**/monitor/ws/*</include>
+                <include>**/services.xml</include>
+              </includes>
+              <archive>
+                <index>true</index>
+                <manifest><addDefaultSpecificationEntries/></manifest>
+              </archive>
+            </configuration>
+          </execution>
+
+          <execution>
+            <id>action1</id>
+            <phase>package</phase>
+            <goals><goal>jar</goal></goals>
+            <configuration>
+              <finalName>SendExpiredNotificationAction</finalName>
+              <outputDirectory>${project.build.directory}/plugins</outputDirectory>
+              <includes>
+                <include>org/glite/ce/monitor/action/SendExpiredNotificationAction.class</include>
+              </includes>
+              <archive>
+                <index>true</index>
+                <manifest>
+                  <addDefaultSpecificationEntries/>
+                  <mainClass>org.glite.ce.monitor.action.SendExpiredNotificationAction</mainClass>
+                </manifest>
+              </archive>
+            </configuration>
+          </execution>
+
+          <execution>
+            <id>action2</id>
+            <phase>package</phase>
+            <goals><goal>jar</goal></goals>
+            <configuration>
+              <finalName>SendNotificationAction</finalName>
+              <outputDirectory>${project.build.directory}/plugins</outputDirectory>
+              <includes>
+                <include>org/glite/ce/monitor/action/SendNotificationAction.class</include>
+              </includes>
+              <archive>
+                <index>true</index>
+                <manifest>
+                  <addDefaultSpecificationEntries/>
+                  <mainClass>org.glite.ce.monitor.action.SendNotificationAction</mainClass>
+                </manifest>
+              </archive>
+            </configuration>
+          </execution>
+
+          <execution>
+            <id>action3</id>
+            <phase>package</phase>
+            <goals><goal>jar</goal></goals>
+            <configuration>
+              <finalName>DoNotSendNotificationAction</finalName>
+              <outputDirectory>${project.build.directory}/plugins</outputDirectory>
+              <includes>
+                <include>org/glite/ce/monitor/action/DoNotSendNotificationAction.class</include>
+              </includes>
+              <archive>
+                <index>true</index>
+                <manifest>
+                  <addDefaultSpecificationEntries/>
+                  <mainClass>org.glite.ce.monitor.action.DoNotSendNotificationAction</mainClass>
+                </manifest>
+              </archive>
+            </configuration>
+          </execution>
+
+          <execution>
+            <id>processor1</id>
+            <phase>package</phase>
+            <goals><goal>jar</goal></goals>
+            <configuration>
+              <finalName>ClassAdProcessor</finalName>
+              <outputDirectory>${project.build.directory}/plugins</outputDirectory>
+              <includes>
+                <include>org/glite/ce/monitor/queryprocessor/ClassAdProcessor.class</include>
+              </includes>
+              <archive>
+                <index>true</index>
+                <manifest>
+                  <addDefaultSpecificationEntries/>
+                  <mainClass>org.glite.ce.monitor.queryprocessor.ClassAdProcessor</mainClass>
+                </manifest>
+              </archive>
+            </configuration>
+          </execution>
+
+          <execution>
+            <id>processor2</id>
+            <phase>package</phase>
+            <goals><goal>jar</goal></goals>
+            <configuration>
+              <finalName>RegExProcessor</finalName>
+              <outputDirectory>${project.build.directory}/plugins</outputDirectory>
+              <includes>
+                <include>org/glite/ce/monitor/queryprocessor/RegExProcessor.class</include>
+              </includes>
+              <archive>
+                <index>true</index>
+                <manifest>
+                  <addDefaultSpecificationEntries/>
+                  <mainClass>org.glite.ce.monitor.queryprocessor.RegExProcessor</mainClass>
+                </manifest>
+              </archive>
+            </configuration>
+          </execution>
+
+           <execution>
+            <id>ce-sensor</id>
+            <phase>package</phase>
+            <goals><goal>jar</goal></goals>
+            <configuration>
+              <finalName>CESensor</finalName>
+              <outputDirectory>${project.build.directory}/plugins</outputDirectory>
+              <includes>
+                <include>org/glite/ce/monitor/ceplugin/*.class</include>
+              </includes>
+              <archive>
+                <index>true</index>
+                <manifest>
+                  <addDefaultSpecificationEntries/>
+                  <mainClass>org.glite.ce.monitor.ceplugin.CESensor</mainClass>
+                </manifest>
+              </archive>
+            </configuration>
+          </execution>
+
+          <!-- this must be the project's main artifact -->
           <execution>
             <id>default-jar</id>
             <phase>package</phase>
@@ -45,7 +214,7 @@
               </includes>
               <archive>
                 <index>true</index>
-                <manifest><addDefaultImplementationEntries/></manifest>
+                <manifest><addDefaultSpecificationEntries/></manifest>
               </archive>
             </configuration>
           </execution>
@@ -56,105 +225,127 @@
 
   </build>
 
+  <profiles>
+    <profile>
+      <id>rpmbuild</id>
+      <activation>
+        <property>
+          <name>rpm.repackaging</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <version>1.7</version>
+            <executions>
+              <execution>
+                <id>rpmbuild</id>
+                <phase>package</phase>
+                <goals><goal>run</goal></goals>
+                <configuration>
+                  <target>
+                    <mkdir dir="${project.build.directory}/rpmbuild/BUILD"/>
+                    <mkdir dir="${project.build.directory}/rpmbuild/RPMS"/>
+                    <mkdir dir="${project.build.directory}/rpmbuild/SOURCES"/>
+                    <mkdir dir="${project.build.directory}/rpmbuild/SPECS"/>
+                    <mkdir dir="${project.build.directory}/rpmbuild/SRPMS"/>
+                    <exec executable="/bin/tar">
+                      <arg line="--exclude .git --exclude target -zcf ${project.build.directory}/rpmbuild/SOURCES/${rpm.pkgname}.tar.gz ."/>
+                    </exec>
+                    <copy file="${project.basedir}/project/${rpm.pkgname}.spec.in" toFile="${project.build.directory}/rpmbuild/SPECS/${rpm.pkgname}.spec"/>
+                    <replace file="${project.build.directory}/rpmbuild/SPECS/${rpm.pkgname}.spec">
+                      <replacefilter token="@PKGNAME@" value="${rpm.pkgname}"/>
+                      <replacefilter token="@PKGVERSION@" value="${project.version}"/>
+                      <replacefilter token="@PKGRELEASE@" value="${rpm.release}"/>
+                      <replacefilter token="@MVNOPTS@" value="-Drpm.repackaging=false -DskipTests"/>
+                      <replacefilter token="@TOMCATPKG@" value="${tomcat.pkg.name}"/>
+                    </replace>
+                    <exec executable="/usr/bin/rpmbuild">
+                      <arg line="-ba --define '_topdir ${project.build.directory}/rpmbuild' ${project.build.directory}/rpmbuild/SPECS/${rpm.pkgname}.spec"/>
+                    </exec>
+                  </target>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 
   <dependencies>
   
     <dependency>
-      <groupId>org.glite.ce.commonj</groupId>
-      <artifactId>glite-ce-common-java</artifactId>
-      <version>${common.java.version}</version>
+      <groupId>org.glite.ce</groupId>
+      <artifactId>cream-common</artifactId>
+      <version>1.14.3</version>
       <scope>compile</scope>
     </dependency>
 
     <dependency>
-      <groupId>org.glite.ce.monitorapij</groupId>
+      <groupId>org.glite.ce</groupId>
       <artifactId>cemonitor-api-java</artifactId>
-      <version>${cemonapi.version}</version>
+      <version>1.14.1</version>
       <scope>compile</scope>
     </dependency>
 
     <dependency>
       <groupId>org.glite.security</groupId>
       <artifactId>trustmanager</artifactId>
-      <version>${trustman.version}</version>
-      <scope>compile</scope>
     </dependency>
 
     <dependency>
       <groupId>org.glite.security.trustmanager.axis2</groupId>
       <artifactId>trustmanager-axis2</artifactId>
-      <version>${trustman.axis2.version}</version>
-      <scope>compile</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.glite.voms</groupId>
-      <artifactId>voms-api-java</artifactId>
-      <version>${voms.version}</version>
-      <scope>compile</scope>
     </dependency>
 
     <dependency>
       <groupId>org.glite.authz</groupId>
       <artifactId>pep-common</artifactId>
-      <version>${pep.common.version}</version>
-      <scope>compile</scope>
     </dependency>
 
     <dependency>
       <groupId>org.glite.authz</groupId>
       <artifactId>pep-java</artifactId>
-      <version>${pep.java.version}</version>
-      <scope>compile</scope>
     </dependency>
 
     <dependency>
       <groupId>org.apache.axis2</groupId>
       <artifactId>axis2</artifactId>
-      <version>${axis2.version}</version>
-      <scope>compile</scope>
     </dependency>
     
     <dependency>
       <groupId>org.apache.ws.commons.axiom</groupId>
       <artifactId>axiom-api</artifactId>
-      <version>${axiom.version}</version>
-      <scope>compile</scope>
     </dependency>
 
     <dependency>
       <groupId>wsdl4j</groupId>
       <artifactId>wsdl4j</artifactId>
-      <version>${wsdl4j.version}</version>
-      <scope>compile</scope>
     </dependency>
 
     <dependency>
       <groupId>org.condor</groupId>
       <artifactId>classad</artifactId>
-      <version>${classad.version}</version>
-      <scope>compile</scope>
     </dependency>
 
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
-      <version>${log4j.version}</version>
-      <scope>compile</scope>
     </dependency>
 
     <dependency>
       <groupId>commons-httpclient</groupId>
       <artifactId>commons-httpclient</artifactId>
-      <version>${commons.httpclient.version}</version>
-      <scope>compile</scope>
     </dependency>
 
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>${junit.version}</version>
-      <scope>test</scope>
     </dependency>
   </dependencies>
 </project>
