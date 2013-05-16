@@ -45,8 +45,12 @@ cp %{_builddir}/%{name}-%{version}/target/axis2/cemonitor-service.jar %{buildroo
 mkdir -p %{buildroot}/usr/share/glite-ce-monitor/modules
 cp %{_builddir}/%{name}-%{version}/target/axis2/cemonitor-authorization.jar %{buildroot}/usr/share/glite-ce-monitor/modules/glite-ce-monitor-authorization.mar
 mkdir -p %{buildroot}/etc/glite-ce-monitor
-cp %{_builddir}/%{name}-%{version}/config/* %{buildroot}/etc/glite-ce-monitor
-
+cp %{_builddir}/%{name}-%{version}/config/*.template %{buildroot}/etc/glite-ce-monitor
+cp %{_builddir}/%{name}-%{version}/config/*.properties %{buildroot}/etc/glite-ce-monitor
+cp %{_builddir}/%{name}-%{version}/config/web.xml %{buildroot}/etc/glite-ce-monitor
+sed -e 's|__CHANGE_SERVICE__|/etc/glite-ce-monitor/cemonitor-config.xml|g' \
+    -e 's|__CHANGE_LOG4J__|/etc/glite-ce-monitor/log4j.properties|g' \
+    %{_builddir}/%{name}-%{version}/config/axis2.xml > %{buildroot}/etc/glite-ce-monitor/axis2.xml
 
 %clean
 rm -rf %{buildroot}
@@ -96,16 +100,11 @@ if [ ! -L /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/services/glite-ce-monit
   
 fi
 
-# Axis Servlet configuration
-# customization of axis2.xml
-REPLACE1='s|__CHANGE_SERVICE__|/etc/glite-ce-monitor/cemonitor-config.xml|g'
-REPLACE2='s|__CHANGE_LOG4J__|/etc/glite-ce-monitor/log4j.properties|g'
-  
-sed "$REPLACE1 ; $REPLACE2" /etc/glite-ce-common-java/axis2.xml > /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/conf/axis2.xml
-chmod 600 /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/conf/axis2.xml
-chown tomcat.tomcat /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/conf/axis2.xml
 # cannot use symlinks for the following files:
 cp -f /etc/glite-ce-common-java/web.xml /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/
+cp -f /etc/glite-ce-common-java/axis2.xml /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/conf/axis2.xml
+chmod 600 /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/conf/axis2.xml
+chown tomcat.tomcat /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/conf/axis2.xml
 
 if [ $1 -eq 1 ] ; then  
 # Creation of the back-end and log dir
@@ -154,6 +153,7 @@ fi
 %config(noreplace) /etc/glite-ce-monitor/cemonitor-config-argus.xml.template
 %config(noreplace) /etc/glite-ce-monitor/cemonitor-config-gjaf.xml.template
 %config(noreplace) /etc/glite-ce-monitor/log4j.properties
+%config(noreplace) /etc/glite-ce-monitor/*.xml
 /usr/share/java/*.jar
 /usr/share/glite-ce-monitor/modules/*
 /usr/share/glite-ce-monitor/services/*
