@@ -31,14 +31,10 @@ public class CEMonServiceConfig
 
     private static Logger logger = Logger.getLogger(CEMonServiceConfig.class.getName());
 
-    static {
-        CommonServiceConfig.configuratorClass = CEMonServiceConfig.class;
-    }
+    protected static CEMonServiceConfig serviceConfiguration = null;
 
-    protected CEMonServiceConfig() throws CommonConfigException {
-
+    public CEMonServiceConfig() throws CommonConfigException {
         super();
-
     }
 
     protected String getSysPropertyName() {
@@ -67,15 +63,19 @@ public class CEMonServiceConfig
     }
 
     public static CEMonServiceConfig getConfiguration() {
-        CommonServiceConfig serviceConfiguration = CommonServiceConfig.getConfiguration();
+        if (serviceConfiguration == null) {
 
-        if (serviceConfiguration != null) {
-            try {
-                return (CEMonServiceConfig) serviceConfiguration;
-            } catch (Throwable th) {
-                logger.error(th.getMessage(), th);
+            synchronized (CEMonServiceConfig.class) {
+
+                if (serviceConfiguration == null) {
+
+                    serviceConfiguration = (CEMonServiceConfig) CommonServiceConfig.getConfiguration();
+
+                }
+
             }
         }
+
         return null;
     }
 
