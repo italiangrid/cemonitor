@@ -76,7 +76,7 @@ public class CEMonServiceConfig
             }
         }
 
-        return null;
+        return serviceConfiguration;
     }
 
     public static Class<?> getClassForCategory(String category) {
