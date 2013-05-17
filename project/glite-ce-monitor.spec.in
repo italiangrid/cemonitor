@@ -74,6 +74,7 @@ set -e
 [ -h %{_webapplibdir}/canl.jar ] || ln -s /usr/share/java/canl.jar %{_webapplibdir}
 [ -h %{_webapplibdir}/canl-java-axis2.jar ] || ln -s /usr/share/java/canl-java-axis2.jar %{_webapplibdir}
 [ -h %{_webapplibdir}/bcprov.jar ] || ln -s /usr/share/java/bcprov.jar %{_webapplibdir}
+[ -h %{_webapplibdir}/bcmail.jar ] || ln -s /usr/share/java/bcmail.jar %{_webapplibdir}
 [ -h %{_webapplibdir}/glite-ce-common-java.jar ] || ln -s /usr/share/java/glite-ce-common-java.jar %{_webapplibdir}
 [ -h %{_webapplibdir}/glite-ce-monitor-api-java.jar ] || ln -s /usr/share/java/glite-ce-monitor-api-java.jar %{_webapplibdir}
 [ -h %{_webapplibdir}/glite-ce-monitor.jar ] || ln -s /usr/share/java/glite-ce-monitor.jar %{_webapplibdir}
