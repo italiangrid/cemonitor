@@ -105,11 +105,13 @@ public final class TopicHolder {
         this.sensorHolder = sensorHolder;
         
         String cachePath = null;
+        String cacheFactory = null;
         int cacheSize = 100;
 
         CEMonServiceConfig sConfiguration = CEMonServiceConfig.getConfiguration();
         if (sConfiguration!=null) {
             cachePath = sConfiguration.getGlobalAttributeAsString("backendLocation");
+            cacheFactory = sConfiguration.getGlobalAttributeAsString("confProvider");
             cacheSize = sConfiguration.getGlobalAttributeAsInt("backendCacheSize", 100);
         }
 
@@ -120,7 +122,7 @@ public final class TopicHolder {
         }
 
         try {
-            backend = new TopicEventInfoPersistent(sensorHolder, "org.glite.ce.commonj.jndi.provider.fscachedprovider.CEGeneralDirContextFactory", cachePath, cacheSize);
+            backend = new TopicEventInfoPersistent(sensorHolder, cacheFactory, cachePath, cacheSize);
         } catch (NamingException e) {
             logger.error("CTOR() - NamingException catched: [" + e.getMessage() + "]. Follow the Stack trace:", e);
         }

@@ -13,8 +13,8 @@
          notificationSharedThread="false"
          notificationTimeout_sec="60"
          backendLocation="/var/cemonitor"
-         confProvider="org.glite.ce.commonj.jndi.provider.fscachedprovider.CEGeneralDirContextFactory"
-         subscriptionRegistryConfProvider="org.glite.ce.commonj.jndi.provider.fscachedprovider.CEGeneralDirContextFactory">
+         confProvider="org.glite.ce.monitor.jndi.provider.fscachedprovider.CEGeneralDirContextFactory"
+         subscriptionRegistryConfProvider="org.glite.ce.monitor.jndi.provider.fscachedprovider.CEGeneralDirContextFactory">
 
   <authzchain name="chain-1">
     <plugin name="bannerpdp"
