@@ -16,6 +16,7 @@ AutoReqProv: yes
 Source: %{name}.tar.gz
 
 %global _tomcat @TOMCATPKG@
+%global _webapplibdir /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/lib
 
 %description
 The CE monitor service is a web application that 
@@ -61,44 +62,39 @@ for((idx=0; idx<5; idx++)) ; do
   if [ $? == 0 ] ; then idx=5; else sleep 5; fi
 done
 
-# Remove the axis1-based installation 
-if [ -d /var/lib/%{_tomcat}/webapps/ce-monitor ] ; then
-  rm -rf /var/lib/%{_tomcat}/webapps/ce-monitor
-  rm -f /etc/%{_tomcat}/Catalina/localhost/ce-monitor.xml
-  rm -rf /var/cache/%{_tomcat}/work/Catalina/localhost/ce-monitor
-fi
-
 %post
-# Do not overwrite axis2-based installation
-if [ ! -L /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/services/glite-ce-monitor.aar ] ; then
+set -e 
 
-  cp -R /usr/share/axis2/webapp /var/lib/%{_tomcat}/webapps/ce-monitor || exit 1
+[ -d /var/lib/%{_tomcat}/webapps/ce-monitor ] || cp -R /usr/share/axis2/webapp /var/lib/%{_tomcat}/webapps/ce-monitor
   
-  ln -s /usr/share/java/jclassads/cedar.jar /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/lib
-  ln -s /usr/share/java/jclassads/classad.jar /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/lib
-  ln -s /usr/share/java/argus-pep-api-java.jar /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/lib
-  ln -s /usr/share/java/argus-pep-common.jar /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/lib
-  ln -s /usr/share/java/canl.jar /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/lib
-  ln -s /usr/share/java/canl-java-axis2.jar /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/lib
-  ln -s /usr/share/java/bcprov.jar /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/lib
-  ln -s /usr/share/java/glite-ce-common-java.jar /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/lib
-  ln -s /usr/share/java/glite-ce-monitor-api-java.jar /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/lib
-  ln -s /usr/share/java/glite-ce-monitor.jar /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/lib
-  ln -s /usr/share/java/voms-api-java3.jar /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/lib
+[ -h %{_webapplibdir}/cedar.jar ] || ln -s /usr/share/java/jclassads/cedar.jar %{_webapplibdir}
+[ -h %{_webapplibdir}/classad.jar ] || ln -s /usr/share/java/jclassads/classad.jar %{_webapplibdir}
+[ -h %{_webapplibdir}/argus-pep-api-java.jar ] || ln -s /usr/share/java/argus-pep-api-java.jar %{_webapplibdir}
+[ -h %{_webapplibdir}/argus-pep-common.jar ] || ln -s /usr/share/java/argus-pep-common.jar %{_webapplibdir}
+[ -h %{_webapplibdir}/canl.jar ] || ln -s /usr/share/java/canl.jar %{_webapplibdir}
+[ -h %{_webapplibdir}/canl-java-axis2.jar ] || ln -s /usr/share/java/canl-java-axis2.jar %{_webapplibdir}
+[ -h %{_webapplibdir}/bcprov.jar ] || ln -s /usr/share/java/bcprov.jar %{_webapplibdir}
+[ -h %{_webapplibdir}/glite-ce-common-java.jar ] || ln -s /usr/share/java/glite-ce-common-java.jar %{_webapplibdir}
+[ -h %{_webapplibdir}/glite-ce-monitor-api-java.jar ] || ln -s /usr/share/java/glite-ce-monitor-api-java.jar %{_webapplibdir}
+[ -h %{_webapplibdir}/glite-ce-monitor.jar ] || ln -s /usr/share/java/glite-ce-monitor.jar %{_webapplibdir}
+[ -h %{_webapplibdir}/voms-api-java3.jar ] || ln -s /usr/share/java/voms-api-java3.jar %{_webapplibdir}
+
+#removing broken links from previous installation
+find -L %{_webapplibdir} -type l -exec rm -f '{}' \;
 
 %if 0%{?el6}
-  # set allowLinking option for tomcat6
+# set allowLinking option for tomcat6
+if [ ! -d /var/lib/%{_tomcat}/webapps/ce-monitor/META-INF ] ; then
   mkdir /var/lib/%{_tomcat}/webapps/ce-monitor/META-INF
   echo '<Context override="true" allowLinking="true"></Context>' > /var/lib/%{_tomcat}/webapps/ce-monitor/META-INF/context.xml
+fi
 %endif
 
-  ln -s /usr/share/glite-ce-monitor/modules/glite-ce-monitor-authorization.mar /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/modules
-  find /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/modules -name *.mar -exec basename \{\} \; > /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/modules/modules.list
+ln -sf /usr/share/glite-ce-monitor/modules/glite-ce-monitor-authorization.mar /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/modules
+find /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/modules -name *.mar -exec basename \{\} \; > /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/modules/modules.list
   
-  ln -s /usr/share/glite-ce-monitor/services/glite-ce-monitor.aar /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/services
-  find /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/services -name *.aar -exec basename \{\} \; > /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/services/services.list
-  
-fi
+ln -sf /usr/share/glite-ce-monitor/services/glite-ce-monitor.aar /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/services
+find /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/services -name *.aar -exec basename \{\} \; > /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/services/services.list
 
 # cannot use symlinks for the following files:
 cp -f /etc/glite-ce-monitor/web.xml /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/
