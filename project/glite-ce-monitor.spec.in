@@ -80,6 +80,11 @@ set -e
 [ -h %{_webapplibdir}/glite-ce-monitor.jar ] || ln -s /usr/share/java/glite-ce-monitor.jar %{_webapplibdir}
 [ -h %{_webapplibdir}/voms-api-java3.jar ] || ln -s /usr/share/java/voms-api-java3.jar %{_webapplibdir}
 
+#removing EMI-2 symlinks
+[ -h %{_webapplibdir}/trustmanager-axis2.jar ] && rm -f %{_webapplibdir}/trustmanager-axis2.jar 
+[ -h %{_webapplibdir}/trustmanager.jar ] && rm -f %{_webapplibdir}/trustmanager.jar
+[ -h %{_webapplibdir}/voms-api-java.jar ] && rm -f %{_webapplibdir}/voms-api-java.jar
+
 #removing broken links from previous installation
 find -L %{_webapplibdir} -type l -exec rm -f '{}' \;
 
