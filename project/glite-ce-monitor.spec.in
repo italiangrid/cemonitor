@@ -67,14 +67,26 @@ set -e
 
 [ -d /var/lib/%{_tomcat}/webapps/ce-monitor ] || cp -R /usr/share/axis2/webapp /var/lib/%{_tomcat}/webapps/ce-monitor
   
+if [ -e /usr/share/java/bcprov-1.46.jar ] ; then
+    BCPROVLIB=/usr/share/java/bcprov-1.46.jar
+else
+    BCPROVLIB=/usr/share/java/bcprov.jar
+fi
+
+if [ -e /usr/share/java/bcmail-1.46.jar ] ; then
+    BCMAILLIB=/usr/share/java/bcmail-1.46.jar
+else
+    BCMAILLIB=/usr/share/java/bcmail.jar
+fi
+
 [ -h %{_webapplibdir}/cedar.jar ] || ln -s /usr/share/java/jclassads/cedar.jar %{_webapplibdir}
 [ -h %{_webapplibdir}/classad.jar ] || ln -s /usr/share/java/jclassads/classad.jar %{_webapplibdir}
 [ -h %{_webapplibdir}/argus-pep-api-java.jar ] || ln -s /usr/share/java/argus-pep-api-java.jar %{_webapplibdir}
 [ -h %{_webapplibdir}/argus-pep-common.jar ] || ln -s /usr/share/java/argus-pep-common.jar %{_webapplibdir}
 [ -h %{_webapplibdir}/canl.jar ] || ln -s /usr/share/java/canl.jar %{_webapplibdir}
 [ -h %{_webapplibdir}/canl-java-axis2.jar ] || ln -s /usr/share/java/canl-java-axis2.jar %{_webapplibdir}
-[ -h %{_webapplibdir}/bcprov.jar ] || ln -s /usr/share/java/bcprov.jar %{_webapplibdir}
-[ -h %{_webapplibdir}/bcmail.jar ] || ln -s /usr/share/java/bcmail.jar %{_webapplibdir}
+[ -h %{_webapplibdir}/bcprov.jar ] || ln -s ${BCPROVLIB} %{_webapplibdir}/bcprov.jar
+[ -h %{_webapplibdir}/bcmail.jar ] || ln -s ${BCMAILLIB} %{_webapplibdir}/bcmail.jar
 [ -h %{_webapplibdir}/glite-ce-common-java.jar ] || ln -s /usr/share/java/glite-ce-common-java.jar %{_webapplibdir}
 [ -h %{_webapplibdir}/glite-ce-monitor-api-java.jar ] || ln -s /usr/share/java/glite-ce-monitor-api-java.jar %{_webapplibdir}
 [ -h %{_webapplibdir}/glite-ce-monitor.jar ] || ln -s /usr/share/java/glite-ce-monitor.jar %{_webapplibdir}
