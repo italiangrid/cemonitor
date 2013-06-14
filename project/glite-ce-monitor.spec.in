@@ -95,6 +95,10 @@ fi
 [ -h %{_webapplibdir}/trustmanager.jar ] && rm -f %{_webapplibdir}/trustmanager.jar
 [ -h %{_webapplibdir}/voms-api-java.jar ] && rm -f %{_webapplibdir}/voms-api-java.jar
 
+#removing EMI-3 compat symlinks
+[ -h %{_webapplibdir}/argus-pep-api-java-compat.jar ] && rm -f %{_webapplibdir}/argus-pep-api-java-compat.jar
+[ -h %{_webapplibdir}/argus-pep-common-compat.jar ] && rm -f %{_webapplibdir}/argus-pep-common-compat.jar
+
 #removing broken links from previous installation
 find -L %{_webapplibdir} -type l -exec rm -f '{}' \;
 
