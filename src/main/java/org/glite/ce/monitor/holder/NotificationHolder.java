@@ -610,8 +610,8 @@ public final class NotificationHolder
             sslConfig.put(CRL_MODE, "ifvalid");
         }
 
-        sConfiguration.getGlobalAttributeAsInt("sslRefreshTime", 3600000);
-        sslConfig.put(CACRL_REFRESH, "updateinterval");
+        String updateinterval = sConfiguration.getGlobalAttributeAsString("sslRefreshTime", "3600000");
+        sslConfig.put(CACRL_REFRESH, updateinterval);
 
         return sslConfig;
     }
