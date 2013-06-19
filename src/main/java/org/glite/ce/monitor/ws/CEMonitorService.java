@@ -111,7 +111,7 @@ public class CEMonitorService
 
     private final static Logger logger = Logger.getLogger(CEMonitorService.class.getName());
 
-    private final static String DEFAULT_PROVIDER = "org.glite.ce.commonj.jndi.provider.fscachedprovider.CEGeneralDirContextFactory";
+    private final static String DEFAULT_PROVIDER = "org.glite.ce.monitor.jndi.provider.fscachedprovider.CEGeneralDirContextFactory";
 
     protected static int numberOfInstances = 0;
 
