@@ -56,16 +56,16 @@ public final class TopicEventInfoPersistent {
     private static final String TOPIC_ATTR_IsEventOverwriteModeActive = "isEventOverwriteModeActive";
 
     public TopicEventInfoPersistent(SensorHolder sensorHolder, String factory, String cemonCacheDir, int cacheSize) throws NamingException {
-   //     this.providerFactory = factory;
+
         this.sensorHolder = sensorHolder;
                         
-        Hashtable env = new Hashtable(0);
+        Hashtable<String, Object> env = new Hashtable<String, Object>(0);
         env.put(Context.INITIAL_CONTEXT_FACTORY, factory);
         env.put(Context.PROVIDER_URL, cemonCacheDir);
         env.put("cache.size", new Integer(cacheSize));
 
         rootCtx = (DirContext) (new InitialDirContext(env)).lookup("");
-        // logger.debug("Context loaded");
+
     }
 
     public void bindTopic(Topic topic, boolean useRebind) throws IllegalArgumentException,
@@ -147,7 +147,7 @@ public final class TopicEventInfoPersistent {
         }
 
         try {
-            Enumeration allNames = rootCtx.list("");
+            Enumeration<NameClassPair> allNames = rootCtx.list("");
             while (allNames.hasMoreElements()) {
                 NameClassPair item = (NameClassPair) allNames.nextElement();
                 if (topicName.equals(item.getName())) {
@@ -155,7 +155,7 @@ public final class TopicEventInfoPersistent {
                 }
             }
         } catch (NamingException nEx) {
-            // logger.error(nEx.getMessage());
+            logger.error(nEx.getMessage(), nEx);
         }
 
         return false;
@@ -165,17 +165,17 @@ public final class TopicEventInfoPersistent {
         Topic[] topicArray = null;
 
         try {
-            Enumeration allNames = rootCtx.list("");
-            ArrayList list = new ArrayList(0);
+            Enumeration<NameClassPair> allNames = rootCtx.list("");
+            ArrayList<Topic> list = new ArrayList<Topic>(0);
 
             while (allNames.hasMoreElements()) {
                 NameClassPair item = (NameClassPair) allNames.nextElement();
                 try {
                     list.add(getTopic(item.getName()));
                 } catch (IllegalArgumentException e) {
-                    e.printStackTrace();
+                    logger.error(e.getMessage(), e);
                 } catch (TopicNotFoundException e) {
-                    e.printStackTrace();
+                    logger.error(e.getMessage(), e);
                 }
             }
 
@@ -216,7 +216,7 @@ public final class TopicEventInfoPersistent {
 
             attribute = attr.get(TOPIC_ATTR_DIALECT);
             if (attribute != null) {
-                ArrayList list = new ArrayList(0);                
+                ArrayList<Dialect> list = new ArrayList<Dialect>(0);                
                 int index = 0;
                 
                 while(index < attribute.size()) {
@@ -263,10 +263,10 @@ public final class TopicEventInfoPersistent {
 
         String[] groupArray = null;
 
-        ArrayList list = new ArrayList(0);
+        ArrayList<String> list = new ArrayList<String>(0);
             
         try {
-            Enumeration allNames = rootCtx.list(topicName);
+            Enumeration<NameClassPair> allNames = rootCtx.list(topicName);
 
             while (allNames.hasMoreElements()) {
                 NameClassPair item = (NameClassPair) allNames.nextElement();
@@ -287,22 +287,18 @@ public final class TopicEventInfoPersistent {
             throw (new IllegalArgumentException("The topicName argument is null"));
         }
 
-        //SensorEvent[] eventArray = null;
-
         SensorEventArrayList list = new SensorEventArrayList(rootCtx);
             
         try {
-            Enumeration allNames = rootCtx.list(topicName);
+            Enumeration<NameClassPair> allNames = rootCtx.list(topicName);
 
             while (allNames.hasMoreElements()) {
                 NameClassPair item = (NameClassPair) allNames.nextElement();
                 list.addAll(getTopicEvents(topicName, item.getName()));
             }
 
-          //  eventArray = new SensorEvent[list.size()];
-          //  eventArray = (SensorEvent[]) list.toArray(eventArray);
         } catch (NamingException nEx) {
-           // eventArray = new SensorEvent[0];
+            logger.error(nEx.getMessage(), nEx);
         }
 
         return list;
@@ -321,22 +317,15 @@ public final class TopicEventInfoPersistent {
         SensorEventArrayList list = new SensorEventArrayList(rootCtx);
         
         try {   
-            Enumeration allNames = rootCtx.list(topicName + "/" + eventGroup);
+            Enumeration<NameClassPair> allNames = rootCtx.list(topicName + "/" + eventGroup);
             
             while (allNames.hasMoreElements()) {
                 NameClassPair item = (NameClassPair) allNames.nextElement();    
-                list.add(topicName + "/" + eventGroup + "/" + item.getName());
-                
-             //   list.add(item.getName());
-              /*      
-                SensorEvent event = getTopicEvent(topicName, eventGroup, item.getName());
-                if(event != null) {
-                    list.add(event);
-                }*/
+                list.add(topicName + "/" + eventGroup + "/" + item.getName());                
             }
 
         } catch (NamingException nEx) {        
-            logger.error(nEx);
+            logger.error(nEx.getMessage(), nEx);
         }
 
         return list;
@@ -383,34 +372,13 @@ public final class TopicEventInfoPersistent {
   
             return event;
         } catch (NamingException nEx) {
-          //  System.out.println("TopicEventInfoP:getTopicEvent error " + nEx.toString());
+            logger.error(nEx.getMessage(), nEx);
         }
 
         return null;
     }
 
 
-//    public void removeAllTopicEvents(Topic topic) throws IllegalArgumentException {
-//        if (topic == null) {
-//            throw (new IllegalArgumentException("topic not specified!"));
-//        }
-//        
-//        removeAllTopicEvents(topic.getName());
-//    }
-//    
-//    public void removeAllTopicEvents(String topicName) throws IllegalArgumentException {
-//        if (topicName == null) {
-//            throw (new IllegalArgumentException("topic's name not spicified!"));
-//        }
-//        
-//        try {
-//            rootCtx.destroySubcontext(topicName);
-//        } catch (NamingException e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        }
-//    }
-    
     public void removeTopicEvent(SensorEvent event) throws IllegalArgumentException, EventNotFoundException {
         if (event == null) {
             throw (new IllegalArgumentException("The event argument is null"));
@@ -422,7 +390,7 @@ public final class TopicEventInfoPersistent {
             if(sensor != null) {
                 topic = getTopic(sensor.getType());
             }
-             //   topic = getTopic(event.getProducer());
+
         } catch (Exception e) {
             throw (new EventNotFoundException(e));
         } 
@@ -460,27 +428,6 @@ public final class TopicEventInfoPersistent {
                 eventContext.unbind(event.getName());  
             }
  
-
-//            Object obj = eventContext.lookup(event.getName());
-
-/*
-    System.out.println("cemon eventCtxName = " + eventCtxName); 
-
-            Enumeration allNames = eventContext.list("");
-            while (allNames.hasMoreElements()) {
-                NameClassPair item = (NameClassPair) allNames.nextElement();
-
-    System.out.println("cemon item name = " + item.getName());
-
-                if(event.getName().equals(item.getName())) {
-                   try {
-                       Object obj = eventContext.lookup(item.getName());
-                   } catch(Exception e) { 
-                   }
-                }
-            }
-            eventContext.unbind(event.getName());
-*/
         } catch (NameNotFoundException e) {
             logger.error(e.getMessage());
             throw (new EventNotFoundException(e));
@@ -523,15 +470,6 @@ public final class TopicEventInfoPersistent {
         DirContext topicContext = (DirContext) rootCtx.createSubcontext(eventCtxName);
         
         if (topic.isEventOverwriteModeActive()) {
-//            Object obj = null;
-//            try {
-//                obj = topicContext.lookup(event.getName());
-//            } catch(Exception e) {}        
-//            if(obj != null) {
-//                topicContext.rebind(event.getName(), event);             
-//            } else {
-//                topicContext.bind(event.getName(), event);
-//            }
                 
             try {
                 topicContext.rebind(event.getName(), event);
