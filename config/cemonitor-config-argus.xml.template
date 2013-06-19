@@ -7,8 +7,7 @@
          sslkeyfile="TOMCAT_HOSTKEY_LOCATION"
          sslcertfile="TOMCAT_HOSTCERT_LOCATION"
          sslkeypasswd=""
-         sslCAfiles="/etc/grid-security/certificates/*.0"
-         sslCRLfiles="/etc/grid-security/certificates/*.r0"
+         sslCALocation="/etc/grid-security/certificates"
          maxSubscriptionExpirationTime_hours="200"
          notificationSharedThread="false"
          notificationTimeout_sec="60"
@@ -89,7 +88,6 @@
 
   <!-- subscription id="subscription-1"
                 monitorConsumerURL="URL_of_the_CE_Monitor_Client"
-                sslprotocol="SSLv3"
                 retryCount="-1">
     <topic name="CE_MONITOR">
       <dialect name="ISM_CLASSAD" />
