@@ -1,7 +1,7 @@
 Summary: Web application monitoring the computing element
 Name: @PKGNAME@
 Version: @PKGVERSION@
-Release: @PKGRELEASE@
+Release: @PKGRELEASE@%{?dist}%{!?dist:.el5}
 License: Apache Software License
 Vendor: EMI
 URL: http://glite.cern.ch/
