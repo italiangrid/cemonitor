@@ -15,7 +15,7 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 AutoReqProv: yes
 Source: %{name}.tar.gz
 
-%global _tomcat @TOMCATPKG@
+%global _tomcat %{?el6:tomcat6}%{!?el6:tomcat5}
 %global _webapplibdir /var/lib/%{_tomcat}/webapps/ce-monitor/WEB-INF/lib
 
 %description
